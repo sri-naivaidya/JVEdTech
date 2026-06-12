@@ -4,12 +4,6 @@ import Preloader from './components/Preloader'
 import IntegratedPage from './components/IntegratedPage'
 import PremiumNavbar from './components/PremiumNavbar'
 import Footer from './components/Footer'
-import Blogs from './components/Blogs'
-import Newsletters from './components/Newsletters'
-import Events from './components/Events'
-import Resources from './components/Resources'
-import BlogArticle from './components/BlogArticle'
-import CustomCursor from './components/CustomCursor'
 import useScrollReveal from './hooks/useScrollReveal'
 import { scrollToSection } from './utils/scrollToSection'
 
@@ -18,7 +12,6 @@ const NaivaidyaChatbot = lazy(() => import('./components/NaivaidyaAssistant.tsx'
 export default function App() {
   const [loading, setLoading] = useState(true)
   const [chatOpen, setChatOpen] = useState(false)
-  const [routePath, setRoutePath] = useState(() => window.location.pathname)
 
   useScrollReveal([loading])
 
@@ -26,67 +19,16 @@ export default function App() {
     if (loading) return
 
     window.scrollTo({ top: 0, behavior: 'auto' })
+    window.history.replaceState(null, '', window.location.pathname)
   }, [loading])
 
   useEffect(() => {
-    const onPopState = () => setRoutePath(window.location.pathname)
-    const onNavigate = () => setRoutePath(window.location.pathname)
-    window.addEventListener('popstate', onPopState)
-    window.addEventListener('app:navigate', onNavigate)
-    return () => {
-      window.removeEventListener('popstate', onPopState)
-      window.removeEventListener('app:navigate', onNavigate)
-    }
-  }, [])
-
-  useEffect(() => {
     const onDocumentClick = (e) => {
-      const homeHashAnchor = e.target.closest('a[href^="/#"]')
-      if (homeHashAnchor) {
-        const href = homeHashAnchor.getAttribute('href')
-        const sectionId = href?.slice(2)
-        if (!sectionId) return
-
-        e.preventDefault()
-        if (window.location.pathname !== '/' || window.location.hash !== `#${sectionId}`) {
-          window.history.pushState(null, '', `/#${sectionId}`)
-          setRoutePath('/')
-          window.dispatchEvent(new CustomEvent('app:navigate'))
-        }
-        window.setTimeout(() => scrollToSection(sectionId), 60)
-        return
-      }
-
-      const routeAnchor = e.target.closest('a[href^="/"]')
-      if (routeAnchor) {
-        const nextPath = routeAnchor.getAttribute('href')
-        if (!nextPath || nextPath.startsWith('/#')) return
-        e.preventDefault()
-        if (nextPath && window.location.pathname !== nextPath) {
-          window.history.pushState(null, '', nextPath)
-          setRoutePath(nextPath)
-          window.dispatchEvent(new CustomEvent('app:navigate'))
-        }
-        window.scrollTo({ top: 0, behavior: 'smooth' })
-        return
-      }
-
       const anchor = e.target.closest('a[href^="#"]')
       if (!anchor) return
 
       const sectionId = anchor.getAttribute('href').slice(1)
-      if (!sectionId) return
-
-      if (window.location.pathname !== '/' && !document.getElementById(sectionId)) {
-        e.preventDefault()
-        window.history.pushState(null, '', `/#${sectionId}`)
-        setRoutePath('/')
-        window.dispatchEvent(new CustomEvent('app:navigate'))
-        window.setTimeout(() => scrollToSection(sectionId), 60)
-        return
-      }
-
-      if (!document.getElementById(sectionId)) return
+      if (!sectionId || !document.getElementById(sectionId)) return
 
       e.preventDefault()
       scrollToSection(sectionId)
@@ -96,23 +38,9 @@ export default function App() {
     return () => document.removeEventListener('click', onDocumentClick)
   }, [])
 
-  const CurrentPage =
-    routePath === '/resources'
-      ? Resources
-      : routePath === '/events'
-      ? () => <Events standalone />
-      : routePath === '/blogs'
-        ? Blogs
-        : routePath.startsWith('/blogs/')
-          ? () => <BlogArticle blogId={routePath.split('/')[2]} />
-          : routePath === '/newsletters'
-            ? Newsletters
-            : IntegratedPage
-
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
-      {!loading && <CustomCursor />}
       <div
         className={`app-shell transition-opacity duration-1000 ease-out ${
           loading ? 'pointer-events-none h-screen overflow-hidden opacity-0' : 'opacity-100'
@@ -120,8 +48,8 @@ export default function App() {
       >
         {!loading && (
           <>
-            <PremiumNavbar currentPath={routePath} />
-            <CurrentPage />
+            <PremiumNavbar />
+            <IntegratedPage />
             <Footer />
 
             <motion.button

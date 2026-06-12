@@ -5,8 +5,6 @@ import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import Button from './ui/Button'
 import Input from './ui/Input'
-import TiltCard from './ui/TiltCard'
-import VisualBackground from './VisualBackground'
 
 const SAMPLE_EVENTS = EVENTS || []
 
@@ -17,16 +15,20 @@ function EventCard({ event, delay, onRegister }) {
 
   const statusStyles = {
     upcoming: 'bg-brand-50 text-brand-700 border-brand-200',
-    live: 'bg-green-50 text-sky-800 border-green-200',
+    live: 'bg-green-50 text-sky-800 border-green-200 animate-pulse',
     past: 'bg-surface-muted text-muted border-sky-200',
   }
 
   return (
     <Reveal delay={delay}>
-      <TiltCard className="group h-full">
+      <motion.div
+        whileHover={{ y: -6 }}
+        transition={{ duration: 0.3 }}
+        className="group h-full"
+      >
         <div className="card-premium flex h-full flex-col overflow-hidden rounded-2xl">
           <div className="relative border-b border-sky-200 p-6">
-            <div className="absolute top-4 right-4 flex h-16 w-16 flex-col items-center justify-center rounded-2xl border border-white/70 bg-gradient-to-br from-brand-100 via-white to-green-100 shadow-lg shadow-brand-300/15">
+            <div className="absolute top-4 right-4 flex h-16 w-16 flex-col items-center justify-center rounded-2xl bg-gradient-to-br from-brand-100 to-green-100">
               <div className="text-[10px] font-semibold uppercase text-brand-500">{month}</div>
               <div className="font-display text-2xl font-bold text-foreground">{day}</div>
             </div>
@@ -37,7 +39,7 @@ function EventCard({ event, delay, onRegister }) {
               >
                 {event.status === 'upcoming' ? 'Upcoming' : event.status === 'live' ? 'LIVE' : 'Past'}
               </span>
-              <span className="inline-block rounded-full border border-accent/15 bg-rose-50/65 px-3 py-1 text-xs font-semibold uppercase tracking-wider text-accent-dark">
+              <span className="inline-block rounded-full border border-sky-200 bg-surface-elevated px-3 py-1 text-xs font-semibold uppercase tracking-wider text-foreground-muted">
                 {event.time.split('–')[0].trim()}
               </span>
             </div>
@@ -76,7 +78,7 @@ function EventCard({ event, delay, onRegister }) {
             </Button>
           </div>
         </div>
-      </TiltCard>
+      </motion.div>
     </Reveal>
   )
 }
@@ -125,7 +127,7 @@ function RegistrationModal({ event, onClose, onSubmit }) {
         animate={{ opacity: 1, scale: 1, y: 0 }}
         exit={{ opacity: 0, scale: 0.95, y: 20 }}
         transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-        className="w-full max-w-2xl rounded-3xl border border-sky-200 bg-gradient-to-br from-white via-sky-50 to-green-50 p-8 shadow-2xl shadow-brand-900/10"
+        className="w-full max-w-2xl rounded-3xl border border-sky-200 bg-gradient-to-br from-white via-sky-50 to-blue-50 border border-sky-200 p-8 shadow-2xl shadow-brand-900/10"
       >
         <div className="mb-6 flex items-start justify-between gap-4">
           <div>
@@ -181,7 +183,7 @@ function RegistrationModal({ event, onClose, onSubmit }) {
   )
 }
 
-export default function Events({ standalone = false }) {
+export default function Events() {
   const [filter, setFilter] = useState('all')
   const [events, setEvents] = useState(SAMPLE_EVENTS)
   const [modalOpen, setModalOpen] = useState(false)
@@ -233,8 +235,8 @@ export default function Events({ standalone = false }) {
 
   const filteredEvents = filter === 'all' ? events : events.filter((item) => item.status === filter)
 
-  const section = (
-    <section id="events" className="section-padding section-surface-blue relative overflow-hidden">
+  return (
+    <section id="events" className="section-padding relative overflow-hidden bg-gradient-to-br from-sky-50 via-cyan-50 to-blue-100">
       <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-30" />
       <div className="section-container relative">
         <SectionHeader
@@ -253,7 +255,7 @@ export default function Events({ standalone = false }) {
                 className={`rounded-full px-5 py-2.5 text-sm font-medium transition-all duration-300 ${
                   filter === option
                     ? 'btn-gradient text-foreground shadow-md shadow-brand-300/20'
-                    : 'border border-brand-200 bg-gradient-to-br from-white via-sky-50 to-green-50 text-foreground-muted hover:border-brand-300 hover:bg-brand-50'
+                    : 'border border-brand-200 bg-gradient-to-br from-white via-sky-50 to-blue-50 border border-sky-200 text-foreground-muted hover:border-brand-300 hover:bg-brand-50'
                 }`}
               >
                 {option === 'all' ? 'All Events' : option === 'upcoming' ? 'Upcoming' : 'Past Events'}
@@ -290,14 +292,5 @@ export default function Events({ standalone = false }) {
         )}
       </AnimatePresence>
     </section>
-  )
-
-  if (!standalone) return section
-
-  return (
-    <main className="resource-page relative min-h-screen overflow-hidden pt-24">
-      <VisualBackground />
-      {section}
-    </main>
   )
 }
