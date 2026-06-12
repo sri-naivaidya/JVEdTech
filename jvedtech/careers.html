@@ -1,0 +1,708 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Join JVedtech Medovation — careers in healthcare education, clinical training, and health-tech innovation." />
+  <title>Careers — JVEDTECH Medovation</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display:ital@0;1&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --green-900: #0d3320;
+      --green-700: #155c38;
+      --green-500: #1a7a4a;
+      --green-400: #22a060;
+      --green-200: #a8e6c4;
+      --green-100: #d4f4e4;
+      --green-50:  #edfaf3;
+      --blue-400:  #5bc4d8;
+      --blue-300:  #80d8e8;
+      --blue-100:  #cef2f9;
+      --blue-50:   #eafaff;
+      --white:     #ffffff;
+      --gray-800:  #1e2428;
+      --gray-600:  #4a5568;
+      --gray-400:  #718096;
+      --gray-300:  #cbd5e0;
+      --gray-100:  #f5f7fa;
+      --shadow-sm: 0 2px 8px rgba(13,51,32,.07);
+      --shadow-md: 0 8px 32px rgba(13,51,32,.11);
+      --shadow-lg: 0 20px 60px rgba(13,51,32,.15);
+      --r-sm: 8px; --r-md: 14px; --r-lg: 22px;
+      --transition: .22s cubic-bezier(.4,0,.2,1);
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+  font-family: 'DM Sans', sans-serif;
+  background:
+    radial-gradient(circle at top left, rgba(91,196,216,0.15), transparent 40%),
+    radial-gradient(circle at bottom right, rgba(34,160,96,0.15), transparent 40%),
+    linear-gradient(
+      135deg,
+      #eafaff 0%,
+      #edfaf3 50%,
+      #dff7ee 100%
+    );
+  color: var(--gray-800);
+  min-height: 100vh;
+}
+
+    .navbar{
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(255,255,255,.97); backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--green-100);
+      padding: 0 40px; height: 68px;
+      display: flex; align-items: center; justify-content: space-between;
+      box-shadow: var(--shadow-sm);
+    }
+    .navbar-brand { display: flex; align-items: center; gap: 10px; text-decoration: none; }
+    .brand-mark {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--green-500), var(--blue-400));
+      display: flex; align-items: center; justify-content: center;
+      font-family: 'DM Serif Display', serif; color: #fff; font-size: 15px;
+    }
+    .brand-text { font-size: 17px; font-weight: 600; color: var(--green-900); letter-spacing: -.3px; }
+    .brand-sub  { font-size: 10px; font-weight: 400; color: var(--green-400); letter-spacing: 1.5px; text-transform: uppercase; }
+    .nav-links { display: flex; gap: 6px; align-items: center; }
+    .nav-links a {
+      font-size: 14px; font-weight: 500; color: var(--gray-600);
+      text-decoration: none; padding: 7px 14px; border-radius: var(--r-sm);
+      transition: var(--transition);
+    }
+    .nav-links a:hover { background: var(--green-50); color: var(--green-500); }
+    .nav-links a.active { background: var(--green-50); color: var(--green-500); }
+    .nav-btn {
+      background: var(--green-500) !important; color: #fff !important;
+      padding: 8px 18px !important;
+    }
+    .nav-btn:hover { background: var(--green-700) !important; color: #fff !important; }
+
+    .hero {
+      margin-top: 68px; padding: 90px 40px 70px;
+      background: linear-gradient(135deg,#d9f7ff 0%,#dfffe8 50%,#c9f7e1 100%);
+      border-bottom: 1px solid var(--green-100);
+      position: relative; overflow: hidden;
+    }
+    .hero::before {
+      content:''; position:absolute; top:-60px; right:-80px; width:420px; height:420px;
+      border-radius:50%; background:radial-gradient(circle,var(--blue-100) 0%,transparent 70%); opacity:.6; pointer-events:none;
+    }
+    .hero-inner {
+      max-width: 1200px; margin: 0 auto; position: relative; z-index: 1;
+      display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 7px;
+      background: var(--white); border: 1px solid var(--green-200);
+      color: var(--green-500); font-size: 12px; font-weight: 600;
+      letter-spacing: .7px; text-transform: uppercase;
+      padding: 5px 14px; border-radius: 50px; margin-bottom: 22px;
+    }
+    .hero-badge span { width: 7px; height: 7px; border-radius: 50%; background: var(--green-400); animation: pulse 2s infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .hero h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(34px, 5vw, 54px); font-weight: 400;
+      color: var(--green-900); line-height: 1.18; letter-spacing: -.8px; margin-bottom: 18px;
+    }
+    .hero h1 em { font-style: italic; color: var(--green-500); }
+    .hero p { font-size: 17px; color: var(--gray-600); line-height: 1.7; max-width: 520px; margin-bottom: 34px; }
+    .hero-ctas { display: flex; gap: 14px; flex-wrap: wrap; }
+    .btn-primary {
+      background: var(--green-500); color: #fff;
+      padding: 13px 28px; border-radius: var(--r-sm);
+      font-size: 15px; font-weight: 600; cursor: pointer; border: none;
+      font-family: inherit; text-decoration: none; display: inline-block;
+      transition: var(--transition); box-shadow: 0 4px 20px rgba(26,122,74,.3);
+    }
+    .btn-primary:hover { background: var(--green-700); transform: translateY(-1px); }
+    .btn-secondary {
+      background: transparent; color: var(--green-700);
+      padding: 13px 28px; border-radius: var(--r-sm);
+      font-size: 15px; font-weight: 600; cursor: pointer; font-family: inherit;
+      border: 2px solid var(--green-200); text-decoration: none; display: inline-block;
+      transition: var(--transition);
+    }
+    .btn-secondary:hover { background: var(--green-50); border-color: var(--green-400); }
+
+    .hero-stats { display: flex; flex-direction: column; gap: 14px; }
+    .stat-card {
+      background: var(--white); border: 1px solid var(--gray-300);
+      border-radius: var(--r-md); padding: 22px 26px;
+      display: flex; align-items: center; gap: 18px;
+      box-shadow: var(--shadow-sm); transition: var(--transition);
+    }
+    .stat-card:hover { box-shadow: var(--shadow-md); border-color: var(--green-200); transform: translateX(4px); }
+    .stat-card:nth-child(2) { margin-left: 28px; }
+    .stat-icon {
+      width: 48px; height: 48px; border-radius: var(--r-sm); flex-shrink: 0;
+      background: linear-gradient(135deg, var(--green-100), var(--blue-100));
+      display: flex; align-items: center; justify-content: center; font-size: 22px;
+    }
+    .stat-num { font-family: 'DM Serif Display', serif; font-size: 28px; color: var(--green-900); line-height: 1; }
+    .stat-label { font-size: 13px; color: var(--gray-600); margin-top: 4px; }
+
+    .main { max-width: 1200px; margin: 0 auto; padding: 0 40px; }
+    .section { padding: 70px 0; }
+    .section-tag { font-size: 11px; font-weight: 600; letter-spacing: 1.8px; text-transform: uppercase; color: var(--green-400); margin-bottom: 10px; display: block; }
+    .section-header { margin-bottom: 44px; }
+    .section-header h2 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(26px, 3.5vw, 36px); font-weight: 400;
+      color: var(--green-900); letter-spacing: -.4px; line-height: 1.22;
+    }
+    .section-header p { color: var(--gray-600); font-size: 16px; line-height: 1.65; margin-top: 10px; max-width: 620px; }
+
+    .values-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 24px; }
+    .value-card {
+      background: rgba(255,255,255,0.82);
+backdrop-filter: blur(12px); border: 1px solid var(--green-100);
+      border-radius: var(--r-md); padding: 32px 28px;
+      box-shadow: var(--shadow-sm); transition: var(--transition);
+    }
+    .value-card:hover { box-shadow: var(--shadow-md); border-color: var(--green-200); transform: translateY(-3px); }
+    .value-icon { font-size: 28px; margin-bottom: 16px; }
+    .value-title { font-family: 'DM Serif Display', serif; font-size: 1.15rem; color: var(--green-900); margin-bottom: 8px; }
+    .value-text { font-size: 14px; color: var(--gray-600); line-height: 1.65; }
+
+    .jobs-grid { display: flex; flex-direction: column; gap: 14px; }
+    .job-card {
+      background: rgba(255,255,255,0.82);
+backdrop-filter: blur(12px); border: 1px solid var(--gray-300);
+      border-radius: var(--r-md); overflow: hidden;
+      transition: var(--transition); box-shadow: var(--shadow-sm);
+    }
+    .job-card:hover { border-color: var(--green-200); box-shadow: var(--shadow-md); }
+    .job-header {
+      padding: 26px 30px; display: flex; align-items: flex-start;
+      justify-content: space-between; gap: 20px; cursor: pointer; user-select: none;
+    }
+    .job-tags { display: flex; gap: 8px; margin-bottom: 12px; flex-wrap: wrap; }
+    .tag-dept {
+      font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 50px;
+      background: var(--green-50); color: var(--green-700); border: 1px solid var(--green-100);
+    }
+    .tag-type {
+      font-size: 11px; font-weight: 600; letter-spacing: .6px; text-transform: uppercase;
+      padding: 4px 10px; border-radius: 50px;
+      background: var(--gray-100); color: var(--gray-600);
+    }
+    .job-title { font-family: 'DM Serif Display', serif; font-size: 1.35rem; color: var(--green-900); margin-bottom: 8px; }
+    .job-summary { font-size: 14px; color: var(--gray-600); line-height: 1.65; max-width: 640px; }
+    .job-arrow {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1.5px solid var(--gray-300);
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; color: var(--gray-600); font-size: 18px;
+      transition: var(--transition); margin-top: 4px;
+    }
+    .job-card.open .job-arrow { transform: rotate(90deg); background: var(--green-50); border-color: var(--green-400); color: var(--green-500); }
+    .job-body { max-height: 0; overflow: hidden; transition: max-height .4s cubic-bezier(.4,0,.2,1); }
+    .job-card.open .job-body { max-height: 500px; }
+    .job-body-inner { padding: 0 30px 30px; border-top: 1px solid var(--gray-100); padding-top: 24px; }
+    .skills-label { font-size: 11px; font-weight: 700; letter-spacing: 1.5px; text-transform: uppercase; color: var(--gray-400); margin-bottom: 14px; }
+    .skills-list { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 22px; }
+    .skill-chip {
+      background: var(--green-50); color: var(--green-700);
+      padding: 7px 16px; border-radius: 50px; font-size: 13px; font-weight: 500;
+      border: 1px solid var(--green-100);
+    }
+    .apply-btn-inline {
+      background: var(--green-500); color: #fff; border: none;
+      padding: 11px 24px; border-radius: var(--r-sm);
+      font-family: inherit; font-size: 13px; font-weight: 600; cursor: pointer;
+      transition: var(--transition);
+    }
+    .apply-btn-inline:hover { background: var(--green-700); }
+
+    .perks-bar {
+      background: linear-gradient(135deg, var(--green-900), var(--green-700));
+      border-radius: var(--r-lg); padding: 48px 44px;
+      display: grid; grid-template-columns: repeat(4, 1fr); gap: 28px;
+      margin-top: 20px;
+    }
+    .perk { text-align: center; color: #fff; }
+    .perk-icon { font-size: 28px; margin-bottom: 10px; }
+    .perk h4 { font-size: 15px; font-weight: 600; margin-bottom: 6px; }
+    .perk p { font-size: 13px; color: rgba(255,255,255,.75); line-height: 1.5; }
+
+    .apply-section {
+      background: linear-gradient(135deg, var(--green-50), var(--blue-50));
+      border-top: 1px solid var(--green-100);
+      border-bottom: 1px solid var(--green-100);
+      padding: 80px 0;
+    }
+    .apply-layout {
+      max-width: 1200px; margin: 0 auto; padding: 0 40px;
+      display: grid; grid-template-columns: 1fr 1.5fr; gap: 56px; align-items: start;
+    }
+    .contact-detail { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; }
+    .contact-detail-icon {
+      width: 42px; height: 42px; background: var(--white);
+      border: 1px solid var(--green-100); border-radius: var(--r-sm);
+      display: flex; align-items: center; justify-content: center; font-size: 18px; flex-shrink: 0;
+    }
+    .contact-detail strong { display: block; font-size: 13px; font-weight: 600; color: var(--green-900); }
+    .contact-detail span { font-size: 14px; color: var(--gray-600); }
+    .contact-detail a { color: var(--green-500); text-decoration: none; }
+    .contact-detail a:hover { text-decoration: underline; }
+
+    .form-card {
+      background: rgba(255,255,255,0.82);
+backdrop-filter: blur(12px); border: 1px solid var(--gray-300);
+      border-radius: var(--r-lg); padding: 40px; box-shadow: var(--shadow-md);
+    }
+    .form-card h3 { font-family: 'DM Serif Display', serif; font-size: 1.5rem; color: var(--green-900); margin-bottom: 6px; }
+    .form-subtitle { font-size: 14px; color: var(--gray-600); margin-bottom: 28px; }
+    .form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+    .form-group { margin-bottom: 18px; }
+    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--green-900); margin-bottom: 7px; }
+    .form-label span { color: var(--green-500); }
+    .form-input, .form-select, .form-textarea {
+      width: 100%; padding: 11px 14px;
+      border: 1.5px solid var(--gray-300); border-radius: var(--r-sm);
+      font-family: inherit; font-size: 14px; color: var(--gray-800);
+      background: rgba(255,255,255,0.82);
+backdrop-filter: blur(12px); transition: var(--transition); outline: none;
+    }
+    .form-input:focus, .form-select:focus, .form-textarea:focus {
+      border-color: var(--green-400); box-shadow: 0 0 0 3px rgba(26,122,74,.1);
+    }
+    .form-textarea { resize: vertical; min-height: 100px; }
+    .form-select { appearance: none; cursor: pointer; }
+    .file-upload {
+      border: 1.5px dashed var(--gray-300); border-radius: var(--r-sm);
+      padding: 24px; text-align: center; cursor: pointer;
+      transition: var(--transition); background: var(--gray-100);
+    }
+    .file-upload:hover { border-color: var(--green-400); background: var(--green-50); }
+    .file-upload input { display: none; }
+    .file-text { font-size: 13px; color: var(--gray-600); }
+    .file-text strong { color: var(--green-500); }
+    .file-name { font-size: 13px; color: var(--green-500); margin-top: 8px; display: none; font-weight: 500; }
+    .checkbox-group { display: flex; align-items: flex-start; gap: 10px; }
+    .checkbox-group input { width: 16px; height: 16px; accent-color: var(--green-500); margin-top: 2px; flex-shrink: 0; }
+    .checkbox-label { font-size: 13px; color: var(--gray-600); line-height: 1.5; }
+    .form-submit {
+      width: 100%; padding: 14px; margin-top: 8px;
+      background: var(--green-500); color: #fff; border: none; border-radius: var(--r-sm);
+      font-family: inherit; font-size: 15px; font-weight: 600; cursor: pointer;
+      transition: var(--transition);
+    }
+    .form-submit:hover { background: var(--green-700); }
+    .form-submit:disabled { background: var(--green-400); cursor: default; }
+    .success-banner {
+      display: none; background: var(--green-50); border: 1px solid var(--green-200);
+      border-radius: var(--r-sm); padding: 20px 24px; text-align: center; margin-top: 20px;
+    }
+    .success-banner h4 { color: var(--green-700); font-size: 16px; margin-bottom: 6px; }
+    .success-banner p { color: var(--gray-600); font-size: 14px; }
+
+    footer { background: var(--gray-800); color: rgba(255,255,255,.6); padding: 50px 40px 28px; }
+    .footer-inner { max-width: 1200px; margin: 0 auto; display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 40px; margin-bottom: 36px; }
+    .footer-col h5 { color: #fff; font-size: 13px; font-weight: 600; letter-spacing: .5px; margin-bottom: 14px; }
+    .footer-col p  { font-size: 13px; line-height: 1.7; }
+    .footer-col a { display: block; font-size: 13px; color: rgba(255,255,255,.55); text-decoration: none; margin-bottom: 8px; transition: var(--transition); }
+    .footer-col a:hover { color: var(--green-200); }
+    .footer-bottom { max-width: 1200px; margin: 0 auto; padding-top: 20px; border-top: 1px solid rgba(255,255,255,.08); display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+    .footer-bottom p { font-size: 12px; }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; gap: 40px; }
+      .stat-card:nth-child(2) { margin-left: 0; }
+      .values-grid { grid-template-columns: 1fr; }
+      .perks-bar { grid-template-columns: 1fr 1fr; }
+      .apply-layout { grid-template-columns: 1fr; }
+      .footer-inner { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 640px) {
+      .navbar { padding: 0 20px; }
+      .hero, .main, .apply-layout { padding-left: 20px; padding-right: 20px; }
+      .apply-layout { padding: 0 20px; }
+      .nav-links a:not(.nav-btn) { display: none; }
+      .form-row { grid-template-columns: 1fr; }
+      .perks-bar { grid-template-columns: 1fr; padding: 32px 24px; }
+      .form-card { padding: 28px 20px; }
+      .footer-inner { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+
+  <nav class="navbar">
+    <a class="navbar-brand" href="jvedtech-events.html">
+      <div class="brand-mark">JV</div>
+      <div>
+        <div class="brand-text">JVEDTECH</div>
+        <div class="brand-sub">Medovation</div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="jvedtech-events.html">Home</a>
+      <a href="jvedtech-events.html#events">Events</a>
+      <a href="jvedtech-careers.html" class="active">Careers</a>
+      <a href="whatsapp-community-2.html">Community</a>
+      <a href="#apply" class="nav-btn">Apply Now</a>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-inner">
+      <div>
+        <div class="hero-badge"><span></span> We're Hiring</div>
+        <h1>Shape the Future of <em>Healthcare Education</em></h1>
+        <p>At JVEDTECH Medovation, we advance healthcare standards through tailored education and cutting-edge solutions. Join a team where learning, growth, and impact converge.</p>
+        <div class="hero-ctas">
+          <a class="btn-primary" href="#roles">View Open Roles</a>
+          <a class="btn-secondary" href="#apply">Apply Now</a>
+        </div>
+      </div>
+      <div class="hero-stats">
+        <div class="stat-card">
+          <div class="stat-icon">🎓</div>
+          <div>
+            <div class="stat-num">3</div>
+            <div class="stat-label">Open Positions</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🏥</div>
+          <div>
+            <div class="stat-num">100%</div>
+            <div class="stat-label">Healthcare Focused</div>
+          </div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-icon">🌱</div>
+          <div>
+            <div class="stat-num">Flexible</div>
+            <div class="stat-label">Full-Time & Part-Time</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="main">
+    <section class="section">
+      <div class="section-header">
+        <span class="section-tag">Why JVedtech</span>
+        <h2>Where expertise meets purpose</h2>
+        <p>We believe the best healthcare outcomes start with the best-trained people. Here's what defines working with us.</p>
+      </div>
+      <div class="values-grid">
+        <div class="value-card">
+          <div class="value-icon">📊</div>
+          <div class="value-title">Data-Driven Decisions</div>
+          <div class="value-text">Every strategy is grounded in evidence — from clinical training to market analysis — to deliver measurable outcomes.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🤝</div>
+          <div class="value-title">Collaborative Culture</div>
+          <div class="value-text">Diverse skills align around a common goal: making healthcare education more effective and accessible.</div>
+        </div>
+        <div class="value-card">
+          <div class="value-icon">🚀</div>
+          <div class="value-title">Continuous Growth</div>
+          <div class="value-text">Learning pathways, mentorship, and the freedom to take ownership and innovate on every project.</div>
+        </div>
+      </div>
+
+      <div class="perks-bar">
+        <div class="perk">
+          <div class="perk-icon">💡</div>
+          <h4>Innovation</h4>
+          <p>Cutting-edge tools in health-tech education</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🎯</div>
+          <h4>Excellence</h4>
+          <p>High standards in design and delivery</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">❤️</div>
+          <h4>Compassion</h4>
+          <p>Care for clinicians and patients alike</p>
+        </div>
+        <div class="perk">
+          <div class="perk-icon">🌍</div>
+          <h4>Impact</h4>
+          <p>Work that improves real patient outcomes</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="roles">
+      <div class="section-header">
+        <span class="section-tag">Open Positions</span>
+        <h2>Find your role at JVedtech</h2>
+        <p>We're growing our team with professionals passionate about advancing healthcare through education and innovation.</p>
+      </div>
+
+      <div class="jobs-grid">
+        <div class="job-card" id="job-ba">
+          <div class="job-header" onclick="toggleJob('job-ba')">
+            <div>
+              <div class="job-tags">
+                <span class="tag-dept">Business</span>
+                <span class="tag-type">Full-Time · Part-Time</span>
+              </div>
+              <div class="job-title">Business Analyst</div>
+              <div class="job-summary">Identify growth opportunities, analyse market trends, and drive data-informed decisions across our healthcare programmes.</div>
+            </div>
+            <div class="job-arrow">›</div>
+          </div>
+          <div class="job-body">
+            <div class="job-body-inner">
+              <div class="skills-label">Key Skills Required</div>
+              <div class="skills-list">
+                <span class="skill-chip">Data Analysis</span>
+                <span class="skill-chip">Strategic Planning</span>
+                <span class="skill-chip">Stakeholder Management</span>
+                <span class="skill-chip">Reporting</span>
+              </div>
+              <button class="apply-btn-inline" onclick="openApply('Business Analyst')">Apply for this Role →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-card" id="job-sma">
+          <div class="job-header" onclick="toggleJob('job-sma')">
+            <div>
+              <div class="job-tags">
+                <span class="tag-dept">Marketing</span>
+                <span class="tag-type">Full-Time · Part-Time</span>
+              </div>
+              <div class="job-title">Social Media Analyst</div>
+              <div class="job-summary">Manage our online presence, craft compelling health-awareness content, monitor engagement metrics, and grow our digital community.</div>
+            </div>
+            <div class="job-arrow">›</div>
+          </div>
+          <div class="job-body">
+            <div class="job-body-inner">
+              <div class="skills-label">Key Skills Required</div>
+              <div class="skills-list">
+                <span class="skill-chip">Content Strategy</span>
+                <span class="skill-chip">Analytics</span>
+                <span class="skill-chip">Community Management</span>
+                <span class="skill-chip">Graphic Tools</span>
+              </div>
+              <button class="apply-btn-inline" onclick="openApply('Social Media Analyst')">Apply for this Role →</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="job-card" id="job-cea">
+          <div class="job-header" onclick="toggleJob('job-cea')">
+            <div>
+              <div class="job-tags">
+                <span class="tag-dept">Clinical</span>
+                <span class="tag-type">Full-Time · Part-Time</span>
+              </div>
+              <div class="job-title">Clinical Education Analyst</div>
+              <div class="job-summary">Design, deliver, and evaluate training programmes for clinical staff, ensuring teams stay at the forefront of evidence-based practice.</div>
+            </div>
+            <div class="job-arrow">›</div>
+          </div>
+          <div class="job-body">
+            <div class="job-body-inner">
+              <div class="skills-label">Key Skills Required</div>
+              <div class="skills-list">
+                <span class="skill-chip">Curriculum Design</span>
+                <span class="skill-chip">Clinical Knowledge</span>
+                <span class="skill-chip">E-Learning</span>
+                <span class="skill-chip">Assessment</span>
+              </div>
+              <button class="apply-btn-inline" onclick="openApply('Clinical Education Analyst')">Apply for this Role →</button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+
+  <section class="apply-section" id="apply">
+    <div class="apply-layout">
+      <div>
+        <span class="section-tag">Get in Touch</span>
+        <h2 style="font-family:'DM Serif Display',serif;font-size:clamp(26px,3.5vw,36px);color:var(--green-900);margin:10px 0 16px;letter-spacing:-.4px;">Apply or reach out</h2>
+        <p style="color:var(--gray-600);line-height:1.7;margin-bottom:28px;max-width:400px;">Whether you're applying for a role or have a question about working at JVEDTECH Medovation, we'd love to hear from you.</p>
+
+        <div class="contact-detail">
+          <div class="contact-detail-icon">✉️</div>
+          <div>
+            <strong>Email</strong>
+            <span><a href="mailto:info@jvedtech.com">info@jvedtech.com</a></span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">📋</div>
+          <div>
+            <strong>Open Roles</strong>
+            <span>Business Analyst, Social Media Analyst, Clinical Education Analyst</span>
+          </div>
+        </div>
+        <div class="contact-detail">
+          <div class="contact-detail-icon">⏱️</div>
+          <div>
+            <strong>Response Time</strong>
+            <span>We aim to respond within 3–5 business days</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="form-card">
+        <h3>Submit Your Application</h3>
+        <p class="form-subtitle">Complete the form below and our team will be in touch shortly.</p>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">First Name <span>*</span></label>
+            <input class="form-input" type="text" placeholder="e.g. Priya" id="f-fname">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Last Name <span>*</span></label>
+            <input class="form-input" type="text" placeholder="e.g. Sharma" id="f-lname">
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Email Address <span>*</span></label>
+          <input class="form-input" type="email" placeholder="you@example.com" id="f-email">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Phone Number</label>
+          <input class="form-input" type="tel" placeholder="+91 00000 00000" id="f-phone">
+        </div>
+        <div class="form-row">
+          <div class="form-group">
+            <label class="form-label">Role Applying For <span>*</span></label>
+            <select class="form-select" id="f-role">
+              <option value="" disabled selected>Select a role</option>
+              <option>Business Analyst</option>
+              <option>Social Media Analyst</option>
+              <option>Clinical Education Analyst</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Engagement Type <span>*</span></label>
+            <select class="form-select" id="f-type">
+              <option value="" disabled selected>Select type</option>
+              <option>Full-Time</option>
+              <option>Part-Time</option>
+              <option>Either / Open to both</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="form-label">LinkedIn / Portfolio URL</label>
+          <input class="form-input" type="url" placeholder="https://linkedin.com/in/yourprofile" id="f-link">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Cover Note <span>*</span></label>
+          <textarea class="form-textarea" placeholder="Tell us why you're a great fit..." id="f-cover" rows="4"></textarea>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Resume / CV <span>*</span></label>
+          <label class="file-upload" for="f-resume">
+            <input type="file" id="f-resume" accept=".pdf,.doc,.docx" onchange="handleFile(this)">
+            <div style="font-size:24px;margin-bottom:8px">📎</div>
+            <div class="file-text"><strong>Click to upload</strong> or drag and drop<br>PDF, DOC, or DOCX — max 5MB</div>
+            <div class="file-name" id="file-name-display"></div>
+          </label>
+        </div>
+        <div class="form-group">
+          <div class="checkbox-group">
+            <input type="checkbox" id="f-consent">
+            <label class="checkbox-label" for="f-consent">I agree to JVEDTECH Medovation processing my personal data for recruitment purposes and confirm the information provided is accurate.</label>
+          </div>
+        </div>
+        <button class="form-submit" onclick="submitForm()">Submit Application</button>
+        <div class="success-banner" id="success-banner">
+          <h4>Application Received</h4>
+          <p>Thank you for applying. We'll be in touch within 3–5 business days at <strong id="confirm-email"></strong>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-col">
+        <div style="display:flex;align-items:center;gap:10px;margin-bottom:14px">
+          <div class="brand-mark" style="width:34px;height:34px;font-size:13px;">JV</div>
+          <div><div class="brand-text" style="color:#fff">JVEDTECH</div><div class="brand-sub">Medovation</div></div>
+        </div>
+        <p>Advancing healthcare through tailored education and cutting-edge solutions for professionals and institutions.</p>
+      </div>
+      <div class="footer-col">
+        <h5>Quick Links</h5>
+        <a href="jvedtech-events.html">Home & Events</a>
+        <a href="jvedtech-careers.html">Careers</a>
+        <a href="whatsapp-community-2.html">Community</a>
+      </div>
+      <div class="footer-col">
+        <h5>Contact</h5>
+        <a href="mailto:info@jvedtech.com">info@jvedtech.com</a>
+        <a href="#apply">Apply Now</a>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 JVEDTECH Medovation. All rights reserved.</p>
+      <p>Careers · Healthcare Education</p>
+    </div>
+  </footer>
+
+  <script>
+    function toggleJob(id) {
+      document.getElementById(id).classList.toggle('open');
+    }
+
+    function openApply(role) {
+      document.getElementById('f-role').value = role;
+      document.getElementById('apply').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function handleFile(input) {
+      const display = document.getElementById('file-name-display');
+      if (input.files && input.files[0]) {
+        display.textContent = '✓ ' + input.files[0].name;
+        display.style.display = 'block';
+      }
+    }
+
+    function submitForm() {
+      const fname = document.getElementById('f-fname').value.trim();
+      const lname = document.getElementById('f-lname').value.trim();
+      const email = document.getElementById('f-email').value.trim();
+      const role = document.getElementById('f-role').value;
+      const type = document.getElementById('f-type').value;
+      const cover = document.getElementById('f-cover').value.trim();
+      const consent = document.getElementById('f-consent').checked;
+
+      if (!fname || !lname || !email || !role || !type || !cover || !consent) {
+        alert('Please complete all required fields and accept the consent checkbox.');
+        return;
+      }
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      document.getElementById('confirm-email').textContent = email;
+      document.getElementById('success-banner').style.display = 'block';
+      const btn = document.querySelector('.form-submit');
+      btn.textContent = 'Application Submitted' ;
+      btn.disabled = true;
+      document.getElementById('success-banner').scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    }
+
+    if (location.hash === '#apply') {
+      const role = new URLSearchParams(location.search).get('role');
+      if (role) setTimeout(() => openApply(role), 300);
+    }
+  </script>
+</body>
+</html>

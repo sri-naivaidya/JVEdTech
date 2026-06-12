@@ -1,0 +1,10 @@
+[
+  {
+    "id": 1780113704302,
+    "name": "Test User",
+    "email": "test@example.com",
+    "subject": "API Test",
+    "message": "Hello from automated test",
+    "date": "2026-05-30T04:01:44.302Z"
+  }
+]
