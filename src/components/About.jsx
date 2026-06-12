@@ -1,3 +1,5 @@
+import { useCallback, useEffect, useLayoutEffect, useRef, useState } from 'react'
+import { motion } from 'framer-motion'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import TiltCard from './ui/TiltCard'
@@ -28,23 +30,186 @@ const TEAM_MEMBERS = [
     name: 'Dr. Jyoti Rao',
     title: 'Co-Founder & CEO',
     href: 'https://www.linkedin.com/in/dr-jyoti-dongre-rao-11520726/',
+    image: '/Dr. Jyothi Rao.png',
   },
   {
     name: 'Ms. Marilyn Olivera',
     title: 'Director Clinical Education and Operations',
     href: 'https://www.linkedin.com/in/marilynolivera/',
+    image: '/Ms. Marilyn Olivera.png',
   },
   {
     name: 'Mr. Dinesh Kamble',
     title: 'Board of Director',
     href: 'https://www.linkedin.com/in/dinesh-k-a409a06b/',
+    image: '/Mr. Dinesh Kamble .png',
+  },
+  {
+    name: 'Mr. Pravin Nimbolkar',
+    title: 'Board of Director',
+    href: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/',
+    image: '/Mr. Pravin Nimbolkar .png',
   },
   {
     name: 'Ms. Vinita Deopurkar',
     title: 'Associate - Clinical Education',
     href: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/',
+    image: '/Ms. Vinita Deopurkar .png',
+  },
+  {
+    name: 'Mr. Sajin Santhosh',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/sajin-santhosh-985a99194/',
+    image: '/Mr. Sajin Santhosh .png',
+  },
+  {
+    name: 'Mr. Abdul Wasim Sheikh',
+    title: 'Analyst - Clinical Education',
+    href: 'https://www.linkedin.com/in/abdul-sheikh-203522a5/',
+    image: '/Mr. Abdul Wasim Sheikh .png',
+  },
+  {
+    name: 'Ms. Shradha Mishra',
+    title: 'Business Development Lead',
+    href: 'https://www.linkedin.com/in/shradha16/',
+    image: '/Ms. Shradha Mishra .png',
+  },
+  {
+    name: 'Mr. Sahil Choure',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/marktaylor/',
+    image: '/Mr. Sahil Choure .png',
+  },
+  {
+    name: 'Mr. Huzaif Shaikh',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/marktaylor',
+    image: '/Mr. Huzaif Shaikh .png',
+  },
+  {
+    name: 'Ms. Aryaa Praseed',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/aryaa-praseed-62a301304/',
+    image: '/Ms. Aryaa Praseed .png',
   },
 ]
+
+const TEAM_GAP = 24
+const TEAM_CARD_HEIGHT = 360
+
+function getVisibleCount(width) {
+  if (width >= 1024) return 4
+  if (width >= 640) return 2
+  return 1
+}
+
+function TeamCarousel() {
+  const containerRef = useRef(null)
+  const [cardWidth, setCardWidth] = useState(0)
+  const [visibleCount, setVisibleCount] = useState(4)
+  const [activeIndex, setActiveIndex] = useState(0)
+
+  const maxIndex = Math.max(0, TEAM_MEMBERS.length - visibleCount)
+
+  const updateLayout = useCallback(() => {
+    const container = containerRef.current
+    if (!container) return
+
+    const nextVisibleCount = getVisibleCount(container.clientWidth)
+    const nextCardWidth =
+      (container.clientWidth - TEAM_GAP * (nextVisibleCount - 1)) / nextVisibleCount
+
+    setVisibleCount(nextVisibleCount)
+    setCardWidth(nextCardWidth)
+    setActiveIndex((current) => Math.min(current, Math.max(0, TEAM_MEMBERS.length - nextVisibleCount)))
+  }, [])
+
+  useLayoutEffect(() => {
+    updateLayout()
+  }, [updateLayout])
+
+  useEffect(() => {
+    window.addEventListener('resize', updateLayout)
+    return () => window.removeEventListener('resize', updateLayout)
+  }, [updateLayout])
+
+  const goPrev = () => setActiveIndex((current) => Math.max(0, current - 1))
+  const goNext = () => setActiveIndex((current) => Math.min(maxIndex, current + 1))
+
+  return (
+    <div className="relative mt-12">
+      <button
+        type="button"
+        onClick={goPrev}
+        disabled={activeIndex === 0}
+        aria-label="Previous team member"
+        className="absolute left-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-green-100 bg-white text-emerald-600 shadow-md transition hover:border-emerald-200 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M15 18l-6-6 6-6" />
+        </svg>
+      </button>
+
+      <div ref={containerRef} className="mx-14 overflow-hidden">
+        <div
+          className="flex gap-6 transition-transform duration-300 ease-out"
+          style={{
+            transform: `translateX(-${activeIndex * (cardWidth + TEAM_GAP)}px)`,
+          }}
+        >
+          {TEAM_MEMBERS.map((member) => (
+            <motion.article
+              key={member.name}
+              data-team-card
+              whileHover={{ y: -6 }}
+              transition={{ duration: 0.3 }}
+              style={{ width: cardWidth, height: TEAM_CARD_HEIGHT }}
+              className="card-premium group flex shrink-0 flex-col p-5 bg-gradient-to-br from-cyan-50 via-green-50 to-emerald-100"
+            >
+              <div className="flex justify-center">
+                <img
+                  src={member.image}
+                  alt={member.name}
+                  className="h-28 w-28 rounded-full object-cover object-top"
+                  loading="lazy"
+                />
+              </div>
+              <h3 className="mt-4 min-h-[3rem] text-center text-base font-semibold leading-snug text-foreground">
+                {member.name}
+              </h3>
+              <p className="mt-2 flex-1 text-center text-sm leading-relaxed text-foreground-muted">
+                {member.title}
+              </p>
+              <a
+                href={member.href}
+                target="_blank"
+                rel="noreferrer"
+                className="mt-4 inline-flex items-center justify-center gap-2 text-sm font-medium text-emerald-600 transition hover:text-brand-500"
+              >
+                View LinkedIn
+                <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
+                  →
+                </span>
+              </a>
+            </motion.article>
+          ))}
+        </div>
+      </div>
+
+      <button
+        type="button"
+        onClick={goNext}
+        disabled={activeIndex >= maxIndex}
+        aria-label="Next team member"
+        className="absolute right-0 top-1/2 z-10 flex h-11 w-11 -translate-y-1/2 items-center justify-center rounded-full border border-green-100 bg-white text-emerald-600 shadow-md transition hover:border-emerald-200 hover:bg-emerald-50 disabled:cursor-not-allowed disabled:opacity-40"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" className="h-5 w-5" aria-hidden="true">
+          <path strokeLinecap="round" strokeLinejoin="round" d="M9 18l6-6-6-6" />
+        </svg>
+      </button>
+    </div>
+  )
+}
 
 const HIGHLIGHTS = [
   { value: 'AI', label: 'Driven impact' },
@@ -174,30 +339,7 @@ export default function About() {
             align="center"
           />
 
-          <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {TEAM_MEMBERS.map((member, i) => (
-              <Reveal key={member.name} delay={i * 0.08}>
-                <TiltCard className="card-premium group p-6" depth={8} lift={6}>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-green-100 text-sm font-bold text-emerald-600">
-                    {member.name.split(' ').slice(-1)[0][0]}
-                  </div>
-                  <h3 className="text-lg font-semibold text-foreground">{member.name}</h3>
-                  <p className="mt-2 text-sm text-foreground-muted">{member.title}</p>
-                  <a
-                    href={member.href}
-                    target="_blank"
-                    rel="noreferrer"
-                    className="mt-5 inline-flex items-center gap-2 text-sm font-medium text-emerald-600 transition hover:text-brand-500"
-                  >
-                    View LinkedIn
-                    <span className="transition-transform group-hover:translate-x-1" aria-hidden="true">
-                      →
-                    </span>
-                  </a>
-                </TiltCard>
-              </Reveal>
-            ))}
-          </div>
+          <TeamCarousel />
         </div>
       </div>
     </section>

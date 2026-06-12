@@ -2,3 +2,9 @@ node_modules/
 .npm-cache/
 build/
 dist/
+
+.env
+.env.local
+
+.vscode/
+.DS_Store
