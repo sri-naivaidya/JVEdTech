@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>JVedtech — Join Our Community</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@300;400;500&family=Playfair+Display:ital,wght@0,400;0,500;1,400&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --green-deep:   #1a4d3a;
+      --green-mid:    #2e7d5e;
+      --green-light:  #4caf85;
+      --blue-soft:    #b2dfd4;
+      --blue-pale:    #e3f4f0;
+      --blue-ice:     #f0faf7;
+      --text-dark:    #0f2820;
+      --text-body:    #3a5a4a;
+      --text-muted:   #7a9e90;
+      --white:        #ffffff;
+      --border:       rgba(46,125,94,0.15);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--white);
+      color: var(--text-dark);
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* HERO */
+    .demo-above {
+      min-height: 60vh;
+      background: var(--blue-ice);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 1rem;
+      padding: 4rem 2rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .demo-above .label {
+      font-size: 0.72rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      font-weight: 500;
+    }
+    .demo-above h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 4vw, 3rem);
+      color: var(--green-deep);
+      text-align: center;
+      font-weight: 400;
+    }
+    .demo-above p {
+      font-size: 1rem;
+      color: var(--text-body);
+      max-width: 500px;
+      text-align: center;
+      line-height: 1.7;
+      font-weight: 300;
+    }
+
+    /* COMMUNITY SECTION */
+    .community-section {
+      position: relative;
+      overflow: hidden;
+      background: var(--green-deep);
+      padding: 7rem 2rem 6rem;
+    }
+    .community-section::before {
+      content: '';
+      position: absolute;
+      width: 700px; height: 700px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(76,175,133,0.12) 0%, transparent 70%);
+      top: -200px; right: -200px;
+      pointer-events: none;
+    }
+    .community-section::after {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(178,223,212,0.08) 0%, transparent 70%);
+      bottom: -150px; left: -100px;
+      pointer-events: none;
+    }
+
+    .container {
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .community-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 5rem;
+      align-items: center;
+    }
+
+    /* LEFT COPY */
+    .community-copy .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.5rem;
+      font-size: 0.72rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--green-light);
+      font-weight: 500;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.1s both;
+    }
+    .community-copy .eyebrow::before {
+      content: '';
+      display: inline-block;
+      width: 20px; height: 1px;
+      background: var(--green-light);
+    }
+    .community-copy h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 4vw, 3.2rem);
+      color: var(--white);
+      font-weight: 400;
+      line-height: 1.2;
+      margin-bottom: 1.5rem;
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.2s both;
+    }
+    .community-copy h2 em { font-style: italic; color: var(--blue-soft); }
+    .community-copy > p {
+      font-size: 1.05rem;
+      color: rgba(255,255,255,0.65);
+      line-height: 1.8;
+      font-weight: 300;
+      margin-bottom: 2.5rem;
+      max-width: 420px;
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.3s both;
+    }
+
+    /* STATS */
+    .stats-row {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 3rem;
+      padding-bottom: 2.5rem;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.35s both;
+    }
+    .stat { display: flex; flex-direction: column; gap: 0.2rem; }
+    .stat-number {
+      font-family: 'Playfair Display', serif;
+      font-size: 2rem;
+      color: var(--white);
+      font-weight: 500;
+      line-height: 1;
+    }
+    .stat-label {
+      font-size: 0.75rem;
+      letter-spacing: 0.08em;
+      color: rgba(255,255,255,0.45);
+      text-transform: uppercase;
+      font-weight: 400;
+    }
+
+    /* CTA */
+    .cta-wrap {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+      flex-wrap: wrap;
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.45s both;
+    }
+    .btn-join {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.75rem;
+      background: var(--green-light);
+      color: var(--white);
+      text-decoration: none;
+      padding: 1rem 2rem;
+      border-radius: 3px;
+      font-size: 0.92rem;
+      font-weight: 500;
+      letter-spacing: 0.04em;
+      transition: background 0.25s, transform 0.2s, box-shadow 0.25s;
+      box-shadow: 0 4px 24px rgba(76,175,133,0.25);
+    }
+    .btn-join:hover {
+      background: #3fa070;
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(76,175,133,0.35);
+    }
+    .btn-join:active { transform: translateY(0); }
+    .btn-join svg { flex-shrink: 0; }
+    .join-note { font-size: 0.8rem; color: rgba(255,255,255,0.35); font-weight: 300; }
+    .join-note strong { color: rgba(255,255,255,0.55); font-weight: 400; }
+
+    /* RIGHT CARD */
+    .community-card {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 4px;
+      padding: 2.8rem;
+      backdrop-filter: blur(8px);
+      animation: fadeUp 0.7s cubic-bezier(.22,.61,.36,1) 0.3s both;
+    }
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 2rem;
+      padding-bottom: 2rem;
+      border-bottom: 1px solid rgba(255,255,255,0.08);
+    }
+    .wa-badge {
+      width: 48px; height: 48px;
+      background: #25D366;
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      box-shadow: 0 0 0 6px rgba(37,211,102,0.15);
+      animation: badgePulse 1.2s ease-in-out 1.4s forwards;
+    }
+    @keyframes badgePulse {
+      0%   { box-shadow: 0 0 0 6px rgba(37,211,102,0.15); }
+      50%  { box-shadow: 0 0 0 12px rgba(37,211,102,0.25); }
+      100% { box-shadow: 0 0 0 6px rgba(37,211,102,0.15); }
+    }
+    .card-meta { display: flex; flex-direction: column; gap: 0.2rem; }
+    .card-meta span {
+      font-size: 0.75rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.35);
+      font-weight: 400;
+    }
+    .card-meta strong { font-size: 1.05rem; color: var(--white); font-weight: 500; }
+
+    /* BENEFITS */
+    .benefit-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 1.2rem;
+      margin-bottom: 2.5rem;
+    }
+    .benefit-list li { display: flex; align-items: flex-start; gap: 1rem; }
+    .benefit-icon {
+      width: 32px; height: 32px;
+      background: rgba(76,175,133,0.12);
+      border: 1px solid rgba(76,175,133,0.25);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+    .benefit-icon svg { width: 14px; height: 14px; }
+    .benefit-text strong {
+      display: block;
+      font-size: 0.9rem;
+      color: var(--white);
+      font-weight: 500;
+      margin-bottom: 0.15rem;
+    }
+    .benefit-text span {
+      font-size: 0.82rem;
+      color: rgba(255,255,255,0.45);
+      font-weight: 300;
+      line-height: 1.5;
+    }
+
+    /* AVATARS */
+    .member-row { display: flex; align-items: center; gap: 1rem; }
+    .avatar-stack { display: flex; }
+    .avatar {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--green-deep);
+      margin-left: -8px;
+      background: var(--green-mid);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem;
+      color: rgba(255,255,255,0.8);
+      font-weight: 500;
+      text-transform: uppercase;
+    }
+    .avatar:first-child { margin-left: 0; }
+    .avatar-count {
+      width: 32px; height: 32px;
+      border-radius: 50%;
+      border: 2px solid var(--green-deep);
+      margin-left: -8px;
+      background: rgba(76,175,133,0.2);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.6rem;
+      color: var(--green-light);
+      font-weight: 500;
+    }
+    .member-label { font-size: 0.82rem; color: rgba(255,255,255,0.45); font-weight: 300; }
+    .member-label strong { color: rgba(255,255,255,0.7); font-weight: 400; }
+
+    /* BOTTOM BAR */
+    .bottom-bar {
+      background: #0f2820;
+      padding: 1.5rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .bottom-bar span { font-size: 0.78rem; color: rgba(255,255,255,0.3); letter-spacing: 0.05em; }
+    .bottom-bar a { font-size: 0.78rem; color: rgba(255,255,255,0.3); text-decoration: none; letter-spacing: 0.05em; transition: color 0.2s; }
+    .bottom-bar a:hover { color: var(--green-light); }
+    .bottom-bar .dot { width: 3px; height: 3px; border-radius: 50%; background: rgba(255,255,255,0.15); }
+
+    /* KEYFRAMES */
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(22px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* RESPONSIVE */
+    @media (max-width: 768px) {
+      .community-grid { grid-template-columns: 1fr; gap: 3rem; }
+      .community-copy > p { max-width: 100%; }
+      .stats-row { gap: 1.5rem; }
+      .community-section { padding: 5rem 1.5rem 4rem; }
+      .community-card { padding: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <section class="demo-above">
+    <span class="label">JVedtech</span>
+    <h2>Bridging Technology &amp; Healthcare</h2>
+    <p>We offer innovative solutions tailored to industry needs — from empowering professionals through education to delivering in-home wellness services and cutting-edge digital health strategies.</p>
+  </section>
+
+  <section class="community-section" id="community">
+    <div class="container">
+      <div class="community-grid">
+
+        <div class="community-copy">
+          <div class="eyebrow">JVedtech Community</div>
+          <h2>Where healthcare meets <em>innovation.</em></h2>
+          <p>Join our WhatsApp community to stay connected with healthcare professionals, receive updates on our services, and be part of a growing network transforming how healthcare is delivered and accessed.</p>
+
+          <div class="stats-row">
+            <div class="stat">
+              <span class="stat-number">Multi</span>
+              <span class="stat-label">Integrated Groups</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">Daily</span>
+              <span class="stat-label">Updates</span>
+            </div>
+            <div class="stat">
+              <span class="stat-number">Free</span>
+              <span class="stat-label">Always</span>
+            </div>
+          </div>
+
+          <div class="cta-wrap">
+            <a href="https://chat.whatsapp.com/FcfH0eRIk7rCeL5dsOzcf2"
+               target="_blank" rel="noopener noreferrer"
+               class="btn-join" id="joinBtn">
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="currentColor"/>
+              </svg>
+              Join the Community
+            </a>
+            <span class="join-note"><strong>Free</strong> · No spam, ever</span>
+          </div>
+        </div>
+
+        <div class="community-card">
+          <div class="card-header">
+            <div class="wa-badge">
+              <svg width="26" height="26" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z" fill="white"/>
+              </svg>
+            </div>
+            <div class="card-meta">
+              <span>Official Network</span>
+              <strong>JVedtech Community</strong>
+            </div>
+          </div>
+
+          <ul class="benefit-list">
+            <li>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M8 1.5A6.5 6.5 0 1 0 14.5 8 6.507 6.507 0 0 0 8 1.5zm.75 9.75h-1.5V7.25h1.5zm0-4h-1.5v-1.5h1.5z" fill="#4caf85"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Healthcare Insights &amp; Updates</strong>
+                <span>Stay informed on industry trends, regulations, and JVedtech news.</span>
+              </div>
+            </li>
+            <li>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M2.5 2h11a1 1 0 0 1 1 1v7a1 1 0 0 1-1 1H9l-3 3v-3H2.5a1 1 0 0 1-1-1V3a1 1 0 0 1 1-1z" stroke="#4caf85" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Direct Access to Our Experts</strong>
+                <span>Engage with our team across education, wellness, and digital health.</span>
+              </div>
+            </li>
+            <li>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 16 16" fill="none"><path d="M8 1l1.9 3.8L14 5.6l-3 2.9.7 4.1L8 10.5l-3.7 2.1.7-4.1-3-2.9 4.1-.8z" stroke="#4caf85" stroke-width="1.3" stroke-linejoin="round"/></svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Exclusive Learning Resources</strong>
+                <span>Members receive priority access to courses, workshops, and wellness programs.</span>
+              </div>
+            </li>
+            <li>
+              <div class="benefit-icon">
+                <svg viewBox="0 0 16 16" fill="none">
+                  <circle cx="6" cy="5" r="2.5" stroke="#4caf85" stroke-width="1.3"/>
+                  <path d="M1.5 13c0-2.485 2.015-4.5 4.5-4.5s4.5 2.015 4.5 4.5" stroke="#4caf85" stroke-width="1.3" stroke-linecap="round"/>
+                  <path d="M10.5 3.5l1 1 2-2" stroke="#4caf85" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+              </div>
+              <div class="benefit-text">
+                <strong>Integrated Professional Network</strong>
+                <span>Connected across multiple specialised groups — one community, many disciplines.</span>
+              </div>
+            </li>
+          </ul>
+
+          <div class="member-row">
+            <div class="avatar-stack">
+              <div class="avatar" style="background:var(--green-mid)">Ed</div>
+              <div class="avatar" style="background:#2a6e72">Wx</div>
+              <div class="avatar" style="background:#3a7d6e">Dm</div>
+              <div class="avatar" style="background:#1f5c4a">Hn</div>
+              <div class="avatar-count">+</div>
+            </div>
+            <span class="member-label"><strong>Multiple groups integrated</strong> — one entry point</span>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <div class="bottom-bar">
+    <span>© 2025 JVedtech. All rights reserved.</span>
+    <div class="dot"></div>
+    <a href="#">Privacy Policy</a>
+    <div class="dot"></div>
+    <a href="#">Terms of Use</a>
+    <div class="dot"></div>
+    <a href="https://chat.whatsapp.com/FcfH0eRIk7rCeL5dsOzcf2" target="_blank" rel="noopener">WhatsApp Community</a>
+  </div>
+
+</body>
+</html>
