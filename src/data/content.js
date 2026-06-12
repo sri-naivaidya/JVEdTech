@@ -226,7 +226,6 @@ export const NAV_MENU = [
   { label: 'Home', href: '/' },
   { label: 'Services', href: '/services' },
   { label: 'About', href: '/about' },
-  { label: 'Events', href: '/events' },
   { label: 'Careers', href: '/careers' },
   { label: 'Contact', href: '/contact' },
 ];

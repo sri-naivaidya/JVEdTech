@@ -5,17 +5,18 @@ import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import Button from './ui/Button'
 import Input, { Textarea, Select } from './ui/Input'
+import TiltCard from './ui/TiltCard'
 
 function ValueCard({ value, delay }) {
   return (
     <Reveal delay={delay}>
-      <motion.div whileHover={{ y: -4 }} transition={{ duration: 0.25 }} className="h-full">
-        <div className="h-full rounded-2xl border border-emerald-200 shadow-xl shadow-black/10 p-8 border border-white/10 shadow-xl shadow-black/10 hover:shadow-lg hover:shadow-emerald-200/30 transition-all duration-300">
+      <TiltCard className="h-full" depth={7} lift={5}>
+        <div className="card-premium h-full p-8">
           <div className="mb-4 text-3xl">{value.icon}</div>
           <h3 className="mb-2 font-display text-lg font-semibold text-foreground">{value.title}</h3>
           <p className="text-sm leading-relaxed text-foreground-muted">{value.description}</p>
         </div>
-      </motion.div>
+      </TiltCard>
     </Reveal>
   )
 }
@@ -24,8 +25,8 @@ function PerkCard({ perk }) {
   return (
     <div className="text-center">
       <div className="mb-3 text-3xl">{perk.icon}</div>
-      <h4 className="mb-1 font-semibold text-white">{perk.title}</h4>
-      <p className="text-sm text-white/70">{perk.description}</p>
+      <h4 className="mb-1 font-semibold text-foreground">{perk.title}</h4>
+      <p className="text-sm text-foreground-muted">{perk.description}</p>
     </div>
   )
 }
@@ -35,10 +36,8 @@ function JobCard({ job, index }) {
 
   return (
     <Reveal delay={index * 0.08}>
-      <motion.div
-        layout
-        className="overflow-hidden rounded-2xl border border-emerald-200 shadow-xl shadow-black/10 shadow-xl shadow-black/10 hover:shadow-lg hover:shadow-emerald-200/40 transition-all duration-300"
-      >
+      <motion.div layout>
+        <TiltCard className="overflow-hidden rounded-2xl border border-white/75 bg-white/78 shadow-[0_24px_70px_-36px_rgba(14,165,233,0.42)] backdrop-blur-2xl transition-all duration-300 hover:border-emerald-200">
         <button
           type="button"
           onClick={() => setExpanded(!expanded)}
@@ -97,15 +96,35 @@ function JobCard({ job, index }) {
             </Button>
           </div>
         </motion.div>
+        </TiltCard>
       </motion.div>
     </Reveal>
   )
 }
 
 export default function Careers() {
+  const [applicationSent, setApplicationSent] = useState(false)
+
+  const handleApplicationSubmit = (e) => {
+    e.preventDefault()
+    const formData = new FormData(e.currentTarget)
+    const payload = Object.fromEntries(formData.entries())
+
+    try {
+      const key = 'jvedtech_career_applications'
+      const stored = JSON.parse(localStorage.getItem(key) || '[]')
+      stored.push({ ...payload, date: new Date().toISOString() })
+      localStorage.setItem(key, JSON.stringify(stored))
+      setApplicationSent(true)
+      e.currentTarget.reset()
+    } catch (error) {
+      alert('Unable to submit application. Please try again.')
+    }
+  }
+
   return (
     <section id="careers" className="relative overflow-hidden">
-      <div className="section-padding relative bg-gradient-to-br from-cyan-50 via-green-50 to-cyan-100">
+      <div className="section-padding section-surface-blue relative">
         <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-30" />
         <div className="section-container relative">
           <Reveal>
@@ -140,7 +159,7 @@ export default function Careers() {
         </div>
       </div>
 
-      <div className="section-padding border-y border-emerald-200 bg-gradient-to-br from-emerald-100 via-emerald-50 to-cyan-100">
+      <div className="section-padding section-surface-green border-y border-white/70">
         <div className="section-container">
           <SectionHeader
             label="Why JVedtech"
@@ -155,7 +174,7 @@ export default function Careers() {
           </div>
 
           <Reveal delay={0.2}>
-            <div className="mt-12 overflow-hidden rounded-3xl bg-gradient-to-br from-surface-dark via-brand-900 to-surface-dark p-8 sm:p-12">
+            <div className="glass-strong mt-12 overflow-hidden rounded-3xl p-8 sm:p-12">
               <div className="grid grid-cols-2 gap-8 sm:grid-cols-4">
                 {COMPANY_PERKS.map((perk) => (
                   <PerkCard key={perk.title} perk={perk} />
@@ -166,7 +185,7 @@ export default function Careers() {
         </div>
       </div>
 
-      <div id="open-positions" className="section-padding bg-gradient-to-br from-cyan-50 via-green-50 to-cyan-100">
+      <div id="open-positions" className="section-padding section-surface-coral">
         <div className="section-container">
           <SectionHeader
             label="Open Positions"
@@ -182,7 +201,7 @@ export default function Careers() {
         </div>
       </div>
 
-      <div className="section-padding bg-gradient-to-br from-emerald-100 via-emerald-50 to-cyan-100">
+      <div className="section-padding section-surface-blue">
         <div className="section-container">
           <div className="grid gap-12 lg:grid-cols-2 lg:gap-16">
             <Reveal>
@@ -224,22 +243,28 @@ export default function Careers() {
             </Reveal>
 
             <Reveal delay={0.15}>
-              <div id="apply-form" className="rounded-3xl border border-emerald-200 shadow-xl shadow-black/10 p-8 border border-white/50 shadow-xl shadow-black/10">
+              <div id="apply-form" className="glass-strong rounded-3xl p-8">
                 <h3 className="mb-2 text-xl font-semibold text-foreground">Submit Your Application</h3>
                 <p className="mb-6 text-sm text-foreground-muted">
                   Complete the form and our team will be in touch shortly.
                 </p>
 
-                <form className="space-y-4">
+                {applicationSent && (
+                  <div className="mb-5 rounded-2xl border border-green-200 bg-green-50/80 px-4 py-3 text-sm font-medium text-green-700">
+                    Application submitted successfully.
+                  </div>
+                )}
+
+                <form className="space-y-4" onSubmit={handleApplicationSubmit}>
                   <div className="grid grid-cols-1 gap-4 sm:grid-cols-2">
-                    <Input type="text" placeholder="First Name" />
-                    <Input type="text" placeholder="Last Name" />
+                    <Input required name="firstName" type="text" placeholder="First Name" />
+                    <Input required name="lastName" type="text" placeholder="Last Name" />
                   </div>
 
-                  <Input type="email" placeholder="Email Address" />
-                  <Input type="tel" placeholder="Phone Number" />
+                  <Input required name="email" type="email" placeholder="Email Address" />
+                  <Input required name="phone" type="tel" placeholder="Phone Number" />
 
-                  <Select defaultValue="">
+                  <Select required name="role" defaultValue="">
                     <option value="">Select a role</option>
                     {OPEN_POSITIONS.map((job) => (
                       <option key={job.id} value={job.title}>
@@ -248,7 +273,7 @@ export default function Careers() {
                     ))}
                   </Select>
 
-                  <Textarea placeholder="Tell us why you're a great fit..." rows={3} />
+                  <Textarea required name="message" placeholder="Tell us why you're a great fit..." rows={3} />
 
                   <Button type="submit" variant="primary" className="w-full">
                     Submit Application

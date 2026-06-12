@@ -1,6 +1,6 @@
-import { motion } from 'framer-motion'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
+import TiltCard from './ui/TiltCard'
 
 const PILLARS = [
   {
@@ -54,7 +54,7 @@ const HIGHLIGHTS = [
 
 export default function About() {
   return (
-    <section id="about" className="section-padding relative overflow-hidden bg-gradient-to-br from-green-50 via-cyan-50 to-emerald-100">
+    <section id="about" className="section-padding section-surface-blue relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-50" />
       <div className="section-container relative">
         <div className="grid gap-16 lg:grid-cols-2 lg:items-start lg:gap-20">
@@ -85,17 +85,17 @@ export default function About() {
                   'We focus on quality and innovation, combined with empathy and collaboration, to build solutions that work for people.',
                 ]
                 return (
-                  <motion.div
+                  <TiltCard
                     key={label}
-                    whileHover={{ y: -4 }}
-                    transition={{ duration: 0.25 }}
-                    className="card-premium rounded-2xl p-5 bg-gradient-to-br from-green-50 via-emerald-50 to-cyan-50 border border-green-100"
+                    depth={7}
+                    lift={5}
+                    className="card-premium rounded-2xl p-5"
                   >
                     <span className="text-xs font-semibold uppercase tracking-[0.2em] text-emerald-600">
                       {label}
                     </span>
                     <p className="mt-3 text-sm leading-relaxed text-foreground-muted">{texts[i]}</p>
-                  </motion.div>
+                  </TiltCard>
                 )
               })}
             </div>
@@ -113,11 +113,7 @@ export default function About() {
           <div className="space-y-4">
             {PILLARS.map((pillar, i) => (
               <Reveal key={pillar.title} delay={i * 0.1}>
-                <motion.article
-                  whileHover={{ x: 4 }}
-                  transition={{ duration: 0.25 }}
-                  className="card-premium rounded-2xl p-5 bg-gradient-to-br from-green-50 via-cyan-50 to-emerald-100"
-                >
+                <TiltCard className="card-premium rounded-2xl p-5" depth={7} lift={5}>
                   <div className="card-shine pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100" />
                   <div className="relative flex items-start justify-between gap-4">
                     <div>
@@ -135,9 +131,38 @@ export default function About() {
                       {pillar.num}
                     </span>
                   </div>
-                </motion.article>
+                </TiltCard>
               </Reveal>
             ))}
+          </div>
+        </div>
+
+        <div className="about-video-section mt-24">
+          <div className="grid gap-10 lg:grid-cols-[0.85fr_1.15fr] lg:items-center">
+            <Reveal>
+              <div>
+                <span className="mb-4 inline-flex rounded-full border border-accent/15 bg-rose-50/75 px-4 py-2 text-xs font-semibold uppercase tracking-[0.2em] text-accent-dark">
+                  Featured Video
+                </span>
+                <h3 className="font-display text-3xl font-bold leading-tight text-foreground sm:text-4xl">
+                  A closer look at our vision for healthcare learning
+                </h3>
+                <p className="mt-5 text-base leading-relaxed text-foreground-muted">
+                  Explore how JV EdTech brings education, wellness, and technology together through a modern healthcare innovation lens.
+                </p>
+              </div>
+            </Reveal>
+
+            <Reveal delay={0.12}>
+              <div className="about-video-frame">
+                <iframe
+                  src="https://www.youtube.com/embed/acEgPBlFZoo"
+                  title="JV EdTech video"
+                  allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
+                  allowFullScreen
+                />
+              </div>
+            </Reveal>
           </div>
         </div>
 
@@ -152,11 +177,7 @@ export default function About() {
           <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
             {TEAM_MEMBERS.map((member, i) => (
               <Reveal key={member.name} delay={i * 0.08}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3 }}
-                  className="card-premium group p-6 bg-gradient-to-br from-cyan-50 via-green-50 to-emerald-100"
-                >
+                <TiltCard className="card-premium group p-6" depth={8} lift={6}>
                   <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-green-100 text-sm font-bold text-emerald-600">
                     {member.name.split(' ').slice(-1)[0][0]}
                   </div>
@@ -173,7 +194,7 @@ export default function About() {
                       →
                     </span>
                   </a>
-                </motion.article>
+                </TiltCard>
               </Reveal>
             ))}
           </div>

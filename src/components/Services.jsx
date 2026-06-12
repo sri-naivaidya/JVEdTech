@@ -1,7 +1,7 @@
-import { motion } from 'framer-motion'
 import SectionHeader from './ui/SectionHeader'
 import AnimatedIconBox from './ui/AnimatedIconBox'
 import Reveal from './ui/Reveal'
+import TiltCard from './ui/TiltCard'
 import {
   IconEducation,
   IconAI,
@@ -94,7 +94,7 @@ const SERVICES = [
 
 export default function Services() {
   return (
-    <section id="services" className="section-padding relative overflow-hidden bg-gradient-to-br from-green-50 via-cyan-50 to-emerald-100">
+    <section id="services" className="section-padding section-surface-green relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-40" />
       <div className="section-container relative">
         <div className="mb-14 max-w-3xl">
@@ -115,11 +115,7 @@ export default function Services() {
             const Icon = service.icon
             return (
               <Reveal key={service.title} delay={(i % 3) * 0.1}>
-                <motion.article
-                  whileHover={{ y: -6 }}
-                  transition={{ duration: 0.3, ease: [0.22, 1, 0.36, 1] }}
-                  className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-green-200 bg-gradient-to-br from-white via-green-50 to-cyan-50 p-7 shadow-sm transition-shadow duration-300 hover:border-green-300 hover:shadow-xl hover:shadow-green-200/40"
-                >
+                <TiltCard className="group relative flex h-full flex-col overflow-hidden rounded-2xl border border-white/75 bg-white/78 p-7 shadow-[0_24px_70px_-36px_rgba(14,165,233,0.42)] backdrop-blur-2xl transition-shadow duration-300 hover:border-green-200">
                   <div className="card-shine pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100" />
 
                   <div className="relative flex flex-1 flex-col">
@@ -142,7 +138,7 @@ export default function Services() {
                       ))}
                     </ul>
                   </div>
-                </motion.article>
+                </TiltCard>
               </Reveal>
             )
           })}
