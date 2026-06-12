@@ -1,4 +1,5 @@
 import Reveal from './Reveal'
+import AnimatedText from './AnimatedText'
 
 export default function SectionHeader({
   label,
@@ -27,11 +28,12 @@ export default function SectionHeader({
         </p>
         {align === 'center' && <span className={`h-px w-10 ${lineColor}`} />}
       </div>
-      <h2
-        className={`font-display text-3xl font-bold leading-[1.15] tracking-tight sm:text-4xl lg:text-[2.75rem] ${titleColor}`}
-      >
-        {title}
-      </h2>
+      <AnimatedText
+        as="h2"
+        text={title}
+        className={`font-display text-3xl font-bold leading-[1.15] sm:text-4xl lg:text-[2.75rem] ${titleColor}`}
+        delay={0.08}
+      />
       {description && (
         <p className={`mt-5 text-base leading-relaxed sm:text-lg ${descColor}`}>{description}</p>
       )}
