@@ -9,6 +9,7 @@ import Newsletters from './components/Newsletters'
 import Events from './components/Events'
 import Resources from './components/Resources'
 import BlogArticle from './components/BlogArticle'
+import AdminPanel from './components/AdminPanel'
 import CustomCursor from './components/CustomCursor'
 import useScrollReveal from './hooks/useScrollReveal'
 import { scrollToSection } from './utils/scrollToSection'
@@ -19,6 +20,7 @@ export default function App() {
   const [loading, setLoading] = useState(true)
   const [chatOpen, setChatOpen] = useState(false)
   const [routePath, setRoutePath] = useState(() => window.location.pathname)
+  const [adminOpen, setAdminOpen] = useState(() => window.location.pathname.startsWith('/admin'))
 
   useScrollReveal([loading])
 
@@ -29,8 +31,15 @@ export default function App() {
   }, [loading])
 
   useEffect(() => {
-    const onPopState = () => setRoutePath(window.location.pathname)
-    const onNavigate = () => setRoutePath(window.location.pathname)
+    const syncRoute = () => {
+      const nextPath = window.location.pathname
+      setRoutePath(nextPath)
+      if (nextPath.startsWith('/admin')) {
+        setAdminOpen(true)
+      }
+    }
+    const onPopState = () => syncRoute()
+    const onNavigate = () => syncRoute()
     window.addEventListener('popstate', onPopState)
     window.addEventListener('app:navigate', onNavigate)
     return () => {
@@ -96,6 +105,15 @@ export default function App() {
     return () => document.removeEventListener('click', onDocumentClick)
   }, [])
 
+  const closeAdmin = () => {
+    setAdminOpen(false)
+    if (window.location.pathname.startsWith('/admin')) {
+      window.history.pushState(null, '', '/')
+      setRoutePath('/')
+      window.dispatchEvent(new CustomEvent('app:navigate'))
+    }
+  }
+
   const CurrentPage =
     routePath === '/resources'
       ? Resources
@@ -120,9 +138,11 @@ export default function App() {
       >
         {!loading && (
           <>
-            <PremiumNavbar currentPath={routePath} />
+            <PremiumNavbar currentPath={routePath} onAdminOpen={() => setAdminOpen(true)} />
             <CurrentPage />
             <Footer />
+
+            <AdminPanel isOpen={adminOpen} currentPath={routePath} onClose={closeAdmin} />
 
             <motion.button
               type="button"

@@ -18,7 +18,7 @@ const RESOURCE_LINKS = [
 ]
 const NAV_OFFSET = 88
 
-export default function PremiumNavbar({ currentPath = '/' }) {
+export default function PremiumNavbar({ currentPath = '/', onAdminOpen }) {
   const [isScrolled, setIsScrolled] = useState(false)
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false)
   const [activeSection, setActiveSection] = useState('home')
@@ -186,6 +186,13 @@ export default function PremiumNavbar({ currentPath = '/' }) {
             <Button href="#community" variant="primary" className="ml-4 px-5 py-2.5 text-xs">
               Join Community
             </Button>
+            <button
+              type="button"
+              onClick={onAdminOpen}
+              className="ml-2 rounded-full border border-brand-200/70 bg-white/78 px-4 py-2.5 text-xs font-bold text-foreground shadow-[0_14px_34px_-24px_rgba(14,165,233,0.55)] backdrop-blur-xl transition-all duration-300 hover:-translate-y-0.5 hover:border-green-200 hover:bg-gradient-to-r hover:from-brand-50 hover:via-white hover:to-green-50 hover:shadow-[0_20px_44px_-26px_rgba(20,184,166,0.58)]"
+            >
+              Admin
+            </button>
           </div>
 
           <button
@@ -258,6 +265,16 @@ export default function PremiumNavbar({ currentPath = '/' }) {
               <Button href="#community" variant="primary" className="mt-2 w-full">
                 Join Community
               </Button>
+              <button
+                type="button"
+                onClick={() => {
+                  setIsMobileMenuOpen(false)
+                  onAdminOpen?.()
+                }}
+                className="mt-2 rounded-xl border border-brand-200/70 bg-white/85 px-4 py-3 text-sm font-bold text-foreground shadow-sm transition hover:bg-brand-50"
+              >
+                Admin Login
+              </button>
             </div>
           </motion.div>
         )}

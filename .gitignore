@@ -2,6 +2,10 @@ node_modules/
 .npm-cache/
 build/
 dist/
+.env
+server/uploads/
+server/data/*.json
+.verify/
 
 .env
 .env.local

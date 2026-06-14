@@ -2,9 +2,29 @@ import { BLOGS } from '../data/resources'
 import VisualBackground from './VisualBackground'
 import TiltCard from './ui/TiltCard'
 import Button from './ui/Button'
+import { useEffect, useState } from 'react'
+import { apiFetch } from '../utils/api'
 
 export default function BlogArticle({ blogId }) {
-  const blog = BLOGS.find((item) => item.id === blogId)
+  const fallbackBlog = BLOGS.find((item) => item.id === blogId)
+  const [blog, setBlog] = useState(fallbackBlog)
+
+  useEffect(() => {
+    if (fallbackBlog) {
+      setBlog(fallbackBlog)
+      return
+    }
+    apiFetch(`/api/public/blogs/${blogId}`).then((item) => {
+      setBlog({
+        ...item,
+        id: item._id,
+        topic: `Topic: ${item.category || 'JV EdTech'}`,
+        date: `Date: ${new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
+        href: `/blogs/${item.slug}`,
+      })
+    }).catch(() => setBlog(null))
+  }, [blogId])
+
   const related = BLOGS.filter((item) => item.id !== blogId).slice(0, 2)
 
   if (!blog) {

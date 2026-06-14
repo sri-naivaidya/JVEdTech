@@ -7,6 +7,7 @@ import Button from './ui/Button'
 import Input from './ui/Input'
 import TiltCard from './ui/TiltCard'
 import VisualBackground from './VisualBackground'
+import useCmsContent from '../hooks/useCmsContent'
 
 const SAMPLE_EVENTS = EVENTS || []
 
@@ -85,6 +86,7 @@ function RegistrationModal({ event, onClose, onSubmit }) {
   const [name, setName] = useState('')
   const [email, setEmail] = useState('')
   const [phone, setPhone] = useState('')
+  const [organization, setOrganization] = useState('')
   const [submitting, setSubmitting] = useState(false)
 
   const handleSubmit = async (e) => {
@@ -98,9 +100,11 @@ function RegistrationModal({ event, onClose, onSubmit }) {
     const payload = {
       id: Date.now(),
       eventId: event.id,
+      eventName: event.title,
       name: name.trim(),
       email: email.trim(),
       phone: phone.trim(),
+      organization: organization.trim(),
       date: new Date().toISOString(),
     }
 
@@ -110,6 +114,7 @@ function RegistrationModal({ event, onClose, onSubmit }) {
       setName('')
       setEmail('')
       setPhone('')
+      setOrganization('')
     }
   }
 
@@ -167,6 +172,12 @@ function RegistrationModal({ event, onClose, onSubmit }) {
             name="phone"
             placeholder="Phone (optional)"
           />
+          <Input
+            value={organization}
+            onChange={(e) => setOrganization(e.target.value)}
+            name="organization"
+            placeholder="College / Organization"
+          />
           <div className="flex flex-col gap-3 sm:flex-row sm:justify-end">
             <Button type="button" variant="secondary" onClick={onClose}>
               Cancel
@@ -183,13 +194,15 @@ function RegistrationModal({ event, onClose, onSubmit }) {
 
 export default function Events({ standalone = false }) {
   const [filter, setFilter] = useState('all')
-  const [events, setEvents] = useState(SAMPLE_EVENTS)
+  const cmsEvents = useCmsContent('/api/public/events', SAMPLE_EVENTS)
+  const events = cmsEvents.map((event, index) => ({
+    ...event,
+    id: event.id || event._id || index + 1,
+    status: event.status === 'published' ? 'upcoming' : event.status,
+    attendees: event.attendees ?? event.seats ?? 0,
+  }))
   const [modalOpen, setModalOpen] = useState(false)
   const [activeEvent, setActiveEvent] = useState(null)
-
-  useEffect(() => {
-    setEvents(SAMPLE_EVENTS)
-  }, [])
 
   async function submitRegistration(payload) {
     try {
