@@ -6,7 +6,7 @@
   "scripts": {
     "start": "node server/index.js",
     "start:server": "node server/index.js",
-    "dev": "vite",
+    "dev": "node scripts/dev-with-api.mjs",
     "build": "vite build",
     "preview": "vite preview",
     "fix-video": "node scripts/remove-watermark.mjs"
