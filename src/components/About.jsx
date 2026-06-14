@@ -1,6 +1,7 @@
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import TiltCard from './ui/TiltCard'
+import useCmsContent from '../hooks/useCmsContent'
 
 const PILLARS = [
   {
@@ -53,6 +54,13 @@ const HIGHLIGHTS = [
 ]
 
 export default function About() {
+  const cmsTeam = useCmsContent('/api/public/team', TEAM_MEMBERS)
+  const teamMembers = cmsTeam.map((member) => ({
+    ...member,
+    title: member.title || member.designation,
+    href: member.href || member.linkedin || '#',
+  }))
+
   return (
     <section id="about" className="section-padding section-surface-blue relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-50" />
@@ -175,12 +183,16 @@ export default function About() {
           />
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 xl:grid-cols-4">
-            {TEAM_MEMBERS.map((member, i) => (
+            {teamMembers.map((member, i) => (
               <Reveal key={member.name} delay={i * 0.08}>
                 <TiltCard className="card-premium group p-6" depth={8} lift={6}>
-                  <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-green-100 text-sm font-bold text-emerald-600">
-                    {member.name.split(' ').slice(-1)[0][0]}
-                  </div>
+                  {member.profileImage ? (
+                    <img src={member.profileImage} alt={member.name} className="mb-4 h-12 w-12 rounded-xl object-cover ring-1 ring-white/80" />
+                  ) : (
+                    <div className="mb-4 flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-green-100 text-sm font-bold text-emerald-600">
+                      {member.name.split(' ').slice(-1)[0][0]}
+                    </div>
+                  )}
                   <h3 className="text-lg font-semibold text-foreground">{member.name}</h3>
                   <p className="mt-2 text-sm text-foreground-muted">{member.title}</p>
                   <a

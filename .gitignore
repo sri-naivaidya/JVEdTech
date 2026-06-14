@@ -2,3 +2,5 @@ node_modules/
 .npm-cache/
 build/
 dist/
+.env
+server/uploads/

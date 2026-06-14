@@ -9,6 +9,7 @@ import Newsletters from './components/Newsletters'
 import Events from './components/Events'
 import Resources from './components/Resources'
 import BlogArticle from './components/BlogArticle'
+import AdminPanel from './components/AdminPanel'
 import CustomCursor from './components/CustomCursor'
 import useScrollReveal from './hooks/useScrollReveal'
 import { scrollToSection } from './utils/scrollToSection'
@@ -97,7 +98,9 @@ export default function App() {
   }, [])
 
   const CurrentPage =
-    routePath === '/resources'
+    routePath.startsWith('/admin')
+      ? () => <AdminPanel currentPath={routePath} />
+      : routePath === '/resources'
       ? Resources
       : routePath === '/events'
       ? () => <Events standalone />
@@ -112,7 +115,7 @@ export default function App() {
   return (
     <>
       {loading && <Preloader onComplete={() => setLoading(false)} />}
-      {!loading && <CustomCursor />}
+      {!loading && !routePath.startsWith('/admin') && <CustomCursor />}
       <div
         className={`app-shell transition-opacity duration-1000 ease-out ${
           loading ? 'pointer-events-none h-screen overflow-hidden opacity-0' : 'opacity-100'
@@ -120,11 +123,11 @@ export default function App() {
       >
         {!loading && (
           <>
-            <PremiumNavbar currentPath={routePath} />
+            {!routePath.startsWith('/admin') && <PremiumNavbar currentPath={routePath} />}
             <CurrentPage />
-            <Footer />
+            {!routePath.startsWith('/admin') && <Footer />}
 
-            <motion.button
+            {!routePath.startsWith('/admin') && <motion.button
               type="button"
               aria-label="Open JVEdTech assistant"
               onClick={() => setChatOpen((prev) => !prev)}
@@ -137,9 +140,9 @@ export default function App() {
                 alt="JVEdTech assistant"
                 className="h-8 w-8 rounded-full object-contain bg-transparent"
               />
-            </motion.button>
+            </motion.button>}
 
-            {chatOpen && (
+            {!routePath.startsWith('/admin') && chatOpen && (
               <Suspense fallback={null}>
                 <NaivaidyaChatbot onClose={() => setChatOpen(false)} />
               </Suspense>
