@@ -937,6 +937,50 @@
   .admin-login-card p,
   .admin-page-header p { color: #64748b; line-height: 1.6; }
 
+  .admin-password-field {
+    position: relative;
+  }
+
+  .admin-password-field .input-field {
+    padding-right: 3.4rem;
+  }
+
+  .admin-password-toggle {
+    position: absolute;
+    right: .7rem;
+    top: 50%;
+    display: inline-flex;
+    height: 2.4rem;
+    width: 2.4rem;
+    transform: translateY(-50%);
+    align-items: center;
+    justify-content: center;
+    border-radius: 999px;
+    color: #64748b;
+    transition: background .2s ease, color .2s ease, transform .2s ease;
+  }
+
+  .admin-password-toggle:hover,
+  .admin-password-toggle:focus-visible {
+    background: rgba(224,242,254,.82);
+    color: #0284c7;
+    outline: none;
+  }
+
+  .admin-password-toggle:active {
+    transform: translateY(-50%) scale(.96);
+  }
+
+  .admin-password-toggle svg {
+    height: 1.2rem;
+    width: 1.2rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.8;
+  }
+
   .admin-kicker {
     color: #0284c7;
     font-size: .7rem;

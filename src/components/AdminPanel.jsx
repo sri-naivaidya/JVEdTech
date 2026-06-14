@@ -112,6 +112,43 @@ function Toast({ message }) {
   return <div className="admin-toast">{message}</div>
 }
 
+function PasswordField({ value, onChange, placeholder = 'Password', autoComplete = 'current-password' }) {
+  const [visible, setVisible] = useState(false)
+
+  return (
+    <div className="admin-password-field">
+      <Input
+        value={value}
+        onChange={onChange}
+        placeholder={placeholder}
+        type={visible ? 'text' : 'password'}
+        autoComplete={autoComplete}
+      />
+      <button
+        type="button"
+        className="admin-password-toggle"
+        onClick={() => setVisible((next) => !next)}
+        aria-label={visible ? 'Hide password' : 'Show password'}
+        aria-pressed={visible}
+      >
+        {visible ? (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 3l18 18" />
+            <path d="M10.6 10.6a2 2 0 0 0 2.8 2.8" />
+            <path d="M9.5 5.4A9.8 9.8 0 0 1 12 5c5.5 0 9 5.4 9 7 0 .7-.6 1.8-1.7 3" />
+            <path d="M6.7 6.7C4.4 8.2 3 10.8 3 12c0 1.6 3.5 7 9 7 1.6 0 3-.4 4.2-1" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M3 12s3.5-7 9-7 9 7 9 7-3.5 7-9 7-9-7-9-7z" />
+            <circle cx="12" cy="12" r="2.5" />
+          </svg>
+        )}
+      </button>
+    </div>
+  )
+}
+
 function AdminLogin({ onLogin }) {
   const [mode, setMode] = useState('login')
   const [form, setForm] = useState({ username: '', password: '', currentPassword: '', newPassword: '' })
@@ -158,7 +195,7 @@ function AdminLogin({ onLogin }) {
       {mode === 'login' ? (
         <>
           <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" autoComplete="username" />
-          <Input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Password" type="password" autoComplete="current-password" />
+          <PasswordField value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} />
         </>
       ) : (
         <>

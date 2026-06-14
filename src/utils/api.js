@@ -35,12 +35,24 @@ export async function apiFetch(path, options = {}) {
   }
   if (token) headers.Authorization = `Bearer ${token}`
 
-  const response = await fetch(`${API_BASE}${path}`, { ...options, headers })
+  let response
+  try {
+    response = await fetch(`${API_BASE}${path}`, { ...options, headers })
+  } catch {
+    throw new Error('Unable to connect to server')
+  }
+
   const contentType = response.headers.get('content-type') || ''
   const data = contentType.includes('application/json') ? await response.json() : await response.text()
 
   if (!response.ok) {
-    throw new Error(data?.error || 'Request failed')
+    if (response.status === 401) {
+      throw new Error(data?.error || 'Invalid username or password')
+    }
+    if (data?.error) {
+      throw new Error(data.error)
+    }
+    throw new Error(response.status >= 500 ? 'Server error. Please try again.' : 'Unable to complete request')
   }
   return data
 }
