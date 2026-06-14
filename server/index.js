@@ -446,6 +446,15 @@ function serializeUser(user) {
   }
 }
 
+function validateNewPassword(password) {
+  if (!password) return 'Password is required'
+  if (password.length < 8) return 'Password must be at least 8 characters'
+  if (!/[A-Za-z]/.test(password) || !/[0-9]/.test(password)) {
+    return 'Password must include at least one letter and one number'
+  }
+  return ''
+}
+
 function crudRoutes(pathName, getModel, entityName, { publicFilter = null } = {}) {
   app.get(`/api/admin/${pathName}`, requireAuth, async (req, res) => {
     const Model = getModel()
@@ -510,7 +519,8 @@ app.get('/api/auth/me', requireAuth, (req, res) => {
 
 app.post('/api/auth/change-password', requireAuth, async (req, res) => {
   const { currentPassword, newPassword } = req.body
-  if (!newPassword || newPassword.length < 8) return res.status(400).json({ error: 'Password must be at least 8 characters' })
+  const passwordError = validateNewPassword(String(newPassword || ''))
+  if (passwordError) return res.status(400).json({ error: passwordError })
   const ok = await bcrypt.compare(currentPassword || '', req.user.passwordHash)
   if (!ok) return res.status(400).json({ error: 'Current password is incorrect' })
   req.user.passwordHash = await bcrypt.hash(newPassword, 12)

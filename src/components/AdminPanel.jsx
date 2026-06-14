@@ -14,6 +14,7 @@ const NAV = [
   ['Team', 'team'],
   ['Messages', 'messages'],
   ['Media', 'media'],
+  ['Account', 'account'],
   ['Admins', 'admins', 'super-admin'],
 ]
 
@@ -499,6 +500,83 @@ function AdminUsers() {
   )
 }
 
+function AccountSecurity() {
+  const [form, setForm] = useState({ currentPassword: '', newPassword: '', confirmPassword: '' })
+  const [message, setMessage] = useState('')
+  const [error, setError] = useState('')
+  const [saving, setSaving] = useState(false)
+
+  async function submit(e) {
+    e.preventDefault()
+    setMessage('')
+    setError('')
+
+    if (form.newPassword !== form.confirmPassword) {
+      setError('New passwords do not match')
+      return
+    }
+
+    try {
+      setSaving(true)
+      const data = await apiFetch('/api/auth/change-password', {
+        method: 'POST',
+        body: JSON.stringify({
+          currentPassword: form.currentPassword,
+          newPassword: form.newPassword,
+        }),
+      })
+      setAdminToken(data.token)
+      setForm({ currentPassword: '', newPassword: '', confirmPassword: '' })
+      setMessage('Password updated successfully')
+    } catch (err) {
+      setError(err.message)
+    } finally {
+      setSaving(false)
+    }
+  }
+
+  return (
+    <section>
+      <div className="admin-page-header">
+        <span className="admin-kicker">Account</span>
+        <h1>Security</h1>
+        <p>Update your admin password after confirming your current password.</p>
+      </div>
+      <form onSubmit={submit} className="admin-panel-card admin-form admin-account-form">
+        <label>
+          <span>Current Password</span>
+          <PasswordField
+            value={form.currentPassword}
+            onChange={(e) => setForm({ ...form, currentPassword: e.target.value })}
+            placeholder="Current Password"
+          />
+        </label>
+        <label>
+          <span>New Password</span>
+          <PasswordField
+            value={form.newPassword}
+            onChange={(e) => setForm({ ...form, newPassword: e.target.value })}
+            placeholder="New Password"
+            autoComplete="new-password"
+          />
+        </label>
+        <label>
+          <span>Confirm New Password</span>
+          <PasswordField
+            value={form.confirmPassword}
+            onChange={(e) => setForm({ ...form, confirmPassword: e.target.value })}
+            placeholder="Confirm New Password"
+            autoComplete="new-password"
+          />
+        </label>
+        {message && <div className="admin-success">{message}</div>}
+        {error && <div className="admin-error">{error}</div>}
+        <Button type="submit" disabled={saving}>{saving ? 'Updating...' : 'Update Password'}</Button>
+      </form>
+    </section>
+  )
+}
+
 export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
   const [user, setUser] = useState(null)
   const [checking, setChecking] = useState(true)
@@ -579,6 +657,7 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
             {page === 'registrations' && <ListManager title="Registrations" endpoint="/api/admin/registrations" columns={['name', 'email', 'phone', 'organization', 'eventName']} />}
             {page === 'messages' && <ListManager title="Messages" endpoint="/api/admin/messages" columns={['name', 'email', 'subject', 'message']} />}
             {page === 'media' && <MediaLibrary />}
+            {page === 'account' && <AccountSecurity />}
             {page === 'admins' && user.role === 'super-admin' && <AdminUsers />}
           </section>
         </div>
