@@ -420,8 +420,9 @@ function AdminUsers() {
   async function save(e) {
     e.preventDefault()
     const payload = Object.fromEntries(new FormData(e.currentTarget).entries())
-    await apiFetch(editing?._id ? `/api/admin/admins/${editing._id}` : '/api/admin/admins', {
-      method: editing?._id ? 'PUT' : 'POST',
+    const editingId = editing?._id || editing?.id
+    await apiFetch(editingId ? `/api/admin/admins/${editingId}` : '/api/admin/admins', {
+      method: editingId ? 'PUT' : 'POST',
       body: JSON.stringify({ ...payload, disabled: payload.disabled === 'on' }),
     })
     setEditing(null)

@@ -4,3 +4,5 @@ build/
 dist/
 .env
 server/uploads/
+server/data/*.json
+.verify/

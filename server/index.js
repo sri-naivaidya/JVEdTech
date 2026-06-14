@@ -1,4 +1,4 @@
-import 'dotenv/config'
+import dotenv from 'dotenv'
 import express from 'express'
 import cors from 'cors'
 import path from 'path'
@@ -12,14 +12,23 @@ import { fileURLToPath } from 'url'
 const __filename = fileURLToPath(import.meta.url)
 const __dirname = path.dirname(__filename)
 
+dotenv.config({
+  path: fs.existsSync(path.join(__dirname, '..', '.env'))
+    ? path.join(__dirname, '..', '.env')
+    : path.join(__dirname, '..', '.env.development'),
+})
+
 const app = express()
 const PORT = process.env.PORT || 4001
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/jvedtech'
 const JWT_SECRET = process.env.JWT_SECRET || 'replace-this-secret-before-production'
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
 const UPLOAD_DIR = path.join(__dirname, 'uploads')
+const DATA_DIR = path.join(__dirname, 'data')
+const USE_JSON_FALLBACK = process.env.CMS_STORAGE === 'json'
 
 if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true })
+if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
 
 app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }))
 app.use(express.json({ limit: '10mb' }))
@@ -27,10 +36,11 @@ app.use(express.urlencoded({ extended: true }))
 app.use('/uploads', express.static(UPLOAD_DIR))
 
 mongoose.set('strictQuery', true)
+mongoose.set('bufferCommands', false)
 
 const baseOptions = { timestamps: true }
 
-const AdminUser = mongoose.model('AdminUser', new mongoose.Schema({
+let AdminUser = mongoose.model('AdminUser', new mongoose.Schema({
   username: { type: String, required: true, unique: true, lowercase: true, trim: true },
   passwordHash: { type: String, required: true },
   role: { type: String, enum: ['super-admin', 'admin'], default: 'admin' },
@@ -40,7 +50,7 @@ const AdminUser = mongoose.model('AdminUser', new mongoose.Schema({
   lastLoginAt: Date,
 }, baseOptions))
 
-const Event = mongoose.model('Event', new mongoose.Schema({
+let Event = mongoose.model('Event', new mongoose.Schema({
   title: { type: String, required: true },
   description: { type: String, default: '' },
   date: String,
@@ -52,7 +62,7 @@ const Event = mongoose.model('Event', new mongoose.Schema({
   status: { type: String, enum: ['draft', 'published', 'unpublished'], default: 'draft' },
 }, baseOptions))
 
-const Blog = mongoose.model('Blog', new mongoose.Schema({
+let Blog = mongoose.model('Blog', new mongoose.Schema({
   title: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
   author: { type: String, default: 'JV EdTech' },
@@ -64,7 +74,7 @@ const Blog = mongoose.model('Blog', new mongoose.Schema({
   status: { type: String, enum: ['draft', 'published', 'unpublished'], default: 'draft' },
 }, baseOptions))
 
-const Newsletter = mongoose.model('Newsletter', new mongoose.Schema({
+let Newsletter = mongoose.model('Newsletter', new mongoose.Schema({
   title: { type: String, required: true },
   month: String,
   year: String,
@@ -74,7 +84,7 @@ const Newsletter = mongoose.model('Newsletter', new mongoose.Schema({
   status: { type: String, enum: ['draft', 'published', 'unpublished'], default: 'draft' },
 }, baseOptions))
 
-const Career = mongoose.model('Career', new mongoose.Schema({
+let Career = mongoose.model('Career', new mongoose.Schema({
   role: { type: String, required: true },
   department: String,
   type: String,
@@ -84,7 +94,7 @@ const Career = mongoose.model('Career', new mongoose.Schema({
   status: { type: String, enum: ['open', 'closed'], default: 'open' },
 }, baseOptions))
 
-const Application = mongoose.model('Application', new mongoose.Schema({
+let Application = mongoose.model('Application', new mongoose.Schema({
   name: String,
   email: String,
   phone: String,
@@ -94,7 +104,7 @@ const Application = mongoose.model('Application', new mongoose.Schema({
   date: { type: Date, default: Date.now },
 }, baseOptions))
 
-const Registration = mongoose.model('Registration', new mongoose.Schema({
+let Registration = mongoose.model('Registration', new mongoose.Schema({
   eventId: String,
   eventName: String,
   name: String,
@@ -104,7 +114,7 @@ const Registration = mongoose.model('Registration', new mongoose.Schema({
   registrationDate: { type: Date, default: Date.now },
 }, baseOptions))
 
-const TeamMember = mongoose.model('TeamMember', new mongoose.Schema({
+let TeamMember = mongoose.model('TeamMember', new mongoose.Schema({
   name: { type: String, required: true },
   designation: String,
   profileImage: String,
@@ -113,7 +123,7 @@ const TeamMember = mongoose.model('TeamMember', new mongoose.Schema({
   status: { type: String, enum: ['published', 'draft'], default: 'published' },
 }, baseOptions))
 
-const Message = mongoose.model('Message', new mongoose.Schema({
+let Message = mongoose.model('Message', new mongoose.Schema({
   name: String,
   email: String,
   subject: String,
@@ -122,7 +132,7 @@ const Message = mongoose.model('Message', new mongoose.Schema({
   date: { type: Date, default: Date.now },
 }, baseOptions))
 
-const Media = mongoose.model('Media', new mongoose.Schema({
+let Media = mongoose.model('Media', new mongoose.Schema({
   filename: String,
   originalName: String,
   mimeType: String,
@@ -132,12 +142,177 @@ const Media = mongoose.model('Media', new mongoose.Schema({
   uploadedBy: { type: mongoose.Schema.Types.ObjectId, ref: 'AdminUser' },
 }, baseOptions))
 
-const Activity = mongoose.model('Activity', new mongoose.Schema({
+let Activity = mongoose.model('Activity', new mongoose.Schema({
   action: String,
   entity: String,
   entityId: String,
   user: String,
 }, { timestamps: true }))
+
+class JsonQuery {
+  constructor(items) {
+    this.items = Array.isArray(items) ? [...items] : []
+  }
+
+  sort(sortSpec = {}) {
+    const [[key, direction] = ['createdAt', -1]] = Object.entries(sortSpec)
+    this.items.sort((a, b) => {
+      const leftDate = Date.parse(a[key])
+      const rightDate = Date.parse(b[key])
+      const left = Number.isNaN(leftDate) ? String(a[key] || '') : leftDate
+      const right = Number.isNaN(rightDate) ? String(b[key] || '') : rightDate
+      if (typeof left === 'string' || typeof right === 'string') {
+        return direction < 0 ? String(right).localeCompare(String(left)) : String(left).localeCompare(String(right))
+      }
+      return direction < 0 ? right - left : left - right
+    })
+    return this
+  }
+
+  limit(count) {
+    this.items = this.items.slice(0, count)
+    return this
+  }
+
+  then(resolve, reject) {
+    return Promise.resolve(this.items).then(resolve, reject)
+  }
+}
+
+class JsonDocument {
+  constructor(model, data) {
+    Object.assign(this, data)
+    this.__model = model
+  }
+
+  async save() {
+    await this.__model.saveDocument(this)
+    return this
+  }
+
+  toJSON() {
+    const { __model, ...data } = this
+    return data
+  }
+}
+
+class JsonModel {
+  constructor(name) {
+    this.name = name
+    this.file = path.join(DATA_DIR, `${name}.json`)
+    if (!fs.existsSync(this.file)) fs.writeFileSync(this.file, '[]')
+  }
+
+  read() {
+    try {
+      return JSON.parse(fs.readFileSync(this.file, 'utf8'))
+    } catch {
+      return []
+    }
+  }
+
+  write(items) {
+    fs.writeFileSync(this.file, JSON.stringify(items, null, 2))
+  }
+
+  document(item) {
+    return item ? new JsonDocument(this, item) : null
+  }
+
+  matches(item, query = {}) {
+    return Object.entries(query).every(([key, expected]) => {
+      if (key === '$or') return expected.some((condition) => this.matches(item, condition))
+      const actual = item[key]
+      if (expected instanceof RegExp) return expected.test(String(actual || ''))
+      return String(actual ?? '') === String(expected ?? '')
+    })
+  }
+
+  normalize(data) {
+    const now = new Date().toISOString()
+    return {
+      _id: data._id || `${Date.now()}-${Math.random().toString(36).slice(2, 10)}`,
+      ...data,
+      createdAt: data.createdAt || now,
+      updatedAt: now,
+    }
+  }
+
+  find(query = {}) {
+    return new JsonQuery(this.read().filter((item) => this.matches(item, query)).map((item) => this.document(item)))
+  }
+
+  async findOne(query = {}) {
+    return this.document(this.read().find((item) => this.matches(item, query)))
+  }
+
+  async findById(id) {
+    return this.document(this.read().find((item) => String(item._id) === String(id)))
+  }
+
+  async create(data) {
+    const items = this.read()
+    const item = this.normalize(data)
+    items.push(item)
+    this.write(items)
+    return this.document(item)
+  }
+
+  async insertMany(rows) {
+    const items = this.read()
+    const docs = rows.map((row) => this.normalize(row))
+    this.write([...items, ...docs])
+    return docs.map((item) => this.document(item))
+  }
+
+  async countDocuments(query = {}) {
+    return this.read().filter((item) => this.matches(item, query)).length
+  }
+
+  async saveDocument(doc) {
+    const data = doc.toJSON ? doc.toJSON() : doc
+    const items = this.read()
+    const index = items.findIndex((item) => String(item._id) === String(data._id))
+    const next = this.normalize(data)
+    if (index >= 0) items[index] = next
+    else items.push(next)
+    this.write(items)
+    Object.assign(doc, next)
+    return doc
+  }
+
+  async findByIdAndUpdate(id, update = {}) {
+    const items = this.read()
+    const index = items.findIndex((item) => String(item._id) === String(id))
+    if (index < 0) return null
+    items[index] = this.normalize({ ...items[index], ...update, _id: items[index]._id, createdAt: items[index].createdAt })
+    this.write(items)
+    return this.document(items[index])
+  }
+
+  async findByIdAndDelete(id) {
+    const items = this.read()
+    const index = items.findIndex((item) => String(item._id) === String(id))
+    if (index < 0) return null
+    const [deleted] = items.splice(index, 1)
+    this.write(items)
+    return this.document(deleted)
+  }
+}
+
+function useJsonStorage() {
+  AdminUser = new JsonModel('adminUsers')
+  Event = new JsonModel('events')
+  Blog = new JsonModel('blogs')
+  Newsletter = new JsonModel('newsletters')
+  Career = new JsonModel('careers')
+  Application = new JsonModel('applications')
+  Registration = new JsonModel('registrations')
+  TeamMember = new JsonModel('teamMembers')
+  Message = new JsonModel('messages')
+  Media = new JsonModel('media')
+  Activity = new JsonModel('activity')
+}
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_DIR),
@@ -269,19 +444,22 @@ function serializeUser(user) {
   }
 }
 
-function crudRoutes(pathName, Model, entityName, { publicFilter = null } = {}) {
+function crudRoutes(pathName, getModel, entityName, { publicFilter = null } = {}) {
   app.get(`/api/admin/${pathName}`, requireAuth, async (req, res) => {
+    const Model = getModel()
     const items = await Model.find().sort({ createdAt: -1 })
     res.json(items)
   })
 
   app.post(`/api/admin/${pathName}`, requireAuth, async (req, res) => {
+    const Model = getModel()
     const item = await Model.create(req.body)
     await logActivity('created', entityName, item._id.toString(), req.user)
     res.status(201).json(item)
   })
 
   app.put(`/api/admin/${pathName}/:id`, requireAuth, async (req, res) => {
+    const Model = getModel()
     const item = await Model.findByIdAndUpdate(req.params.id, req.body, { new: true, runValidators: true })
     if (!item) return res.status(404).json({ error: `${entityName} not found` })
     await logActivity('updated', entityName, item._id.toString(), req.user)
@@ -289,6 +467,7 @@ function crudRoutes(pathName, Model, entityName, { publicFilter = null } = {}) {
   })
 
   app.delete(`/api/admin/${pathName}/:id`, requireAuth, async (req, res) => {
+    const Model = getModel()
     const item = await Model.findByIdAndDelete(req.params.id)
     if (!item) return res.status(404).json({ error: `${entityName} not found` })
     await logActivity('deleted', entityName, item._id.toString(), req.user)
@@ -296,6 +475,7 @@ function crudRoutes(pathName, Model, entityName, { publicFilter = null } = {}) {
   })
 
   app.patch(`/api/admin/${pathName}/:id/status`, requireAuth, async (req, res) => {
+    const Model = getModel()
     const item = await Model.findByIdAndUpdate(req.params.id, { status: req.body.status }, { new: true })
     if (!item) return res.status(404).json({ error: `${entityName} not found` })
     await logActivity('status-updated', entityName, item._id.toString(), req.user)
@@ -303,6 +483,7 @@ function crudRoutes(pathName, Model, entityName, { publicFilter = null } = {}) {
   })
 
   app.get(`/api/public/${pathName}`, async (req, res) => {
+    const Model = getModel()
     const query = publicFilter || { status: 'published' }
     const items = await Model.find(query).sort({ createdAt: -1 })
     res.json(items)
@@ -376,11 +557,11 @@ app.post('/api/admin/admins/:id/reset-password', requireAuth, requireSuperAdmin,
   res.json(serializeUser(user))
 })
 
-crudRoutes('events', Event, 'event')
-crudRoutes('blogs', Blog, 'blog')
-crudRoutes('newsletters', Newsletter, 'newsletter')
-crudRoutes('careers', Career, 'career', { publicFilter: { status: 'open' } })
-crudRoutes('team', TeamMember, 'team-member', { publicFilter: { status: 'published' } })
+crudRoutes('events', () => Event, 'event')
+crudRoutes('blogs', () => Blog, 'blog')
+crudRoutes('newsletters', () => Newsletter, 'newsletter')
+crudRoutes('careers', () => Career, 'career', { publicFilter: { status: 'open' } })
+crudRoutes('team', () => TeamMember, 'team-member', { publicFilter: { status: 'published' } })
 
 app.get('/api/public/blogs/:slug', async (req, res) => {
   const item = await Blog.findOne({ slug: req.params.slug, status: 'published' })
@@ -493,11 +674,17 @@ app.get('/api/admin/registrations', requireAuth, async (req, res) => {
   res.json(await Registration.find(query).sort({ createdAt: -1 }))
 })
 
+function formatDate(value) {
+  if (!value) return ''
+  const date = value instanceof Date ? value : new Date(value)
+  return Number.isNaN(date.getTime()) ? String(value) : date.toISOString()
+}
+
 app.get('/api/admin/registrations/export.csv', requireAuth, async (req, res) => {
   const rows = await Registration.find().sort({ createdAt: -1 })
   const csv = ['Name,Email,Phone,Organization,Event,Registration Date']
   rows.forEach((row) => {
-    csv.push([row.name, row.email, row.phone, row.organization, row.eventName, row.registrationDate?.toISOString()].map((v) => `"${String(v || '').replace(/"/g, '""')}"`).join(','))
+    csv.push([row.name, row.email, row.phone, row.organization, row.eventName, formatDate(row.registrationDate)].map((v) => `"${String(v || '').replace(/"/g, '""')}"`).join(','))
   })
   res.setHeader('Content-Type', 'text/csv')
   res.setHeader('Content-Disposition', 'attachment; filename="registrations.csv"')
@@ -511,7 +698,7 @@ app.get('/api/admin/registrations/export.xls', requireAuth, async (req, res) => 
   })[char])
   const tableRows = [
     ['Name', 'Email', 'Phone', 'Organization', 'Event', 'Registration Date'],
-    ...rows.map((row) => [row.name, row.email, row.phone, row.organization, row.eventName, row.registrationDate?.toISOString()]),
+    ...rows.map((row) => [row.name, row.email, row.phone, row.organization, row.eventName, formatDate(row.registrationDate)]),
   ]
   const xmlRows = tableRows.map((row) => `<Row>${row.map((cell) => `<Cell><Data ss:Type="String">${escapeXml(cell)}</Data></Cell>`).join('')}</Row>`).join('')
   const workbook = `<?xml version="1.0"?><Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet" xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"><Worksheet ss:Name="Registrations"><Table>${xmlRows}</Table></Worksheet></Workbook>`
@@ -536,20 +723,38 @@ app.patch('/api/admin/messages/:id/read', requireAuth, async (req, res) => {
   res.json(item)
 })
 
-app.get('/api/health', (req, res) => res.json({ ok: true, mongo: mongoose.connection.readyState, ts: Date.now() }))
+let storageMode = 'mongodb'
+
+app.get('/api/health', (req, res) => res.json({ status: 'ok', storage: storageMode }))
 
 app.use((error, req, res, next) => {
   console.error(error)
   res.status(error.status || 500).json({ error: error.message || 'Server error' })
 })
 
-mongoose.connect(MONGO_URI)
-  .then(async () => {
-    await seedSuperAdmin()
-    await seedExistingContent()
-    app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
-  })
-  .catch((error) => {
-    console.error('MongoDB connection failed', error)
-    process.exit(1)
-  })
+async function startServer() {
+  if (USE_JSON_FALLBACK) {
+    storageMode = 'json'
+    useJsonStorage()
+    console.log('CMS storage: local JSON fallback')
+  } else {
+    try {
+      await mongoose.connect(MONGO_URI, { serverSelectionTimeoutMS: 2500 })
+      storageMode = 'mongodb'
+      console.log('CMS storage: MongoDB')
+    } catch (error) {
+      storageMode = 'json'
+      useJsonStorage()
+      console.warn(`MongoDB unavailable, using local JSON fallback: ${error.message}`)
+    }
+  }
+
+  await seedSuperAdmin()
+  await seedExistingContent()
+  app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
+}
+
+startServer().catch((error) => {
+  console.error('Server startup failed', error)
+  process.exit(1)
+})
