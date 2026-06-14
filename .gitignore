@@ -6,3 +6,9 @@ dist/
 server/uploads/
 server/data/*.json
 .verify/
+
+.env
+.env.local
+
+.vscode/
+.DS_Store
