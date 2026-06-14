@@ -954,6 +954,90 @@
     font-size: .85rem;
   }
 
+  .admin-layer {
+    position: fixed;
+    inset: 0;
+    z-index: 1600;
+    display: grid;
+    place-items: center;
+    padding: clamp(.85rem, 2vw, 1.6rem);
+    color: #0f172a;
+  }
+
+  .admin-layer-backdrop {
+    position: absolute;
+    inset: 0;
+    border: 0;
+    background:
+      radial-gradient(ellipse 58% 44% at 12% 4%, rgba(125,211,252,.32), transparent 64%),
+      radial-gradient(ellipse 46% 38% at 90% 94%, rgba(134,239,172,.26), transparent 62%),
+      rgba(248,252,255,.66);
+    backdrop-filter: blur(18px);
+  }
+
+  .admin-layer-login {
+    position: relative;
+    width: min(100%, 31rem);
+  }
+
+  .admin-layer-panel {
+    position: relative;
+    width: min(100%, 86rem);
+    max-height: min(86vh, 56rem);
+    min-height: min(82vh, 48rem);
+    overflow: hidden;
+    border: 1px solid rgba(255,255,255,.86);
+    border-radius: 1.6rem;
+    box-shadow:
+      0 34px 120px -52px rgba(14,165,233,.66),
+      0 24px 72px -48px rgba(251,113,133,.46);
+  }
+
+  .admin-layer-topbar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1rem;
+    padding: 1rem 1.15rem;
+    border-bottom: 1px solid rgba(186,230,253,.62);
+    background: rgba(255,255,255,.78);
+    backdrop-filter: blur(20px);
+  }
+
+  .admin-layer-topbar strong {
+    display: block;
+    margin-top: .25rem;
+    font-family: var(--font-display);
+    font-size: clamp(1rem, 1.4vw, 1.28rem);
+  }
+
+  .admin-layer-close {
+    position: relative;
+    z-index: 1;
+    border: 1px solid rgba(186,230,253,.8);
+    border-radius: 999px;
+    padding: .65rem 1rem;
+    background: rgba(255,255,255,.84);
+    color: #0f172a;
+    font-size: .78rem;
+    font-weight: 800;
+    box-shadow: 0 16px 40px -30px rgba(14,165,233,.6);
+    transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
+  }
+
+  .admin-layer-close:hover {
+    transform: translateY(-1px);
+    background: linear-gradient(90deg, rgba(224,242,254,.9), rgba(220,252,231,.82));
+    box-shadow: 0 22px 48px -30px rgba(20,184,166,.62);
+  }
+
+  .admin-layer-body {
+    display: grid;
+    grid-template-columns: 15.5rem minmax(0, 1fr);
+    min-height: 0;
+    overflow: hidden;
+  }
+
   .admin-shell {
     min-height: 100vh;
     display: grid;
@@ -962,6 +1046,11 @@
       radial-gradient(ellipse 54% 34% at 14% 0%, rgba(125,211,252,.16), transparent 64%),
       linear-gradient(180deg, #f8fcff, #f4fbf7);
     color: #0f172a;
+  }
+
+  .admin-layer-panel.admin-shell {
+    display: block;
+    min-height: 0;
   }
 
   .admin-sidebar {
@@ -974,6 +1063,13 @@
     border-right: 1px solid rgba(186,230,253,.7);
     background: rgba(255,255,255,.76);
     backdrop-filter: blur(24px);
+  }
+
+  .admin-layer .admin-sidebar {
+    position: relative;
+    top: auto;
+    height: calc(min(86vh, 56rem) - 4.8rem);
+    overflow-y: auto;
   }
 
   .admin-brand {
@@ -998,7 +1094,9 @@
   }
 
   .admin-sidebar a:hover,
-  .admin-sidebar a.active {
+  .admin-sidebar a.active,
+  .admin-sidebar button:hover,
+  .admin-sidebar button.active {
     color: #0f172a;
     background: linear-gradient(90deg, rgba(224,242,254,.9), rgba(220,252,231,.72));
   }
@@ -1012,6 +1110,11 @@
   .admin-main {
     min-width: 0;
     padding: clamp(1.25rem, 3vw, 2.5rem);
+  }
+
+  .admin-layer .admin-main {
+    max-height: calc(min(86vh, 56rem) - 4.8rem);
+    overflow-y: auto;
   }
 
   .admin-page-header { margin-bottom: 1.5rem; }
@@ -1123,7 +1226,13 @@
 
   @media (max-width: 720px) {
     .admin-shell { grid-template-columns: 1fr; }
+    .admin-layer { align-items: stretch; padding: .65rem; }
+    .admin-layer-panel { max-height: 92vh; min-height: 92vh; border-radius: 1.1rem; }
+    .admin-layer-topbar { align-items: flex-start; flex-direction: column; }
+    .admin-layer-body { grid-template-columns: 1fr; max-height: calc(92vh - 7.4rem); overflow-y: auto; }
     .admin-sidebar { position: relative; height: auto; border-right: 0; border-bottom: 1px solid rgba(186,230,253,.7); }
+    .admin-layer .admin-sidebar { height: auto; max-height: none; }
+    .admin-layer .admin-main { max-height: none; overflow: visible; }
     .admin-sidebar nav { grid-template-columns: repeat(2, minmax(0, 1fr)); }
     .admin-sidebar button { margin-top: 1rem; }
     .admin-stats-grid,

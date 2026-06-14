@@ -4,17 +4,17 @@ import Button from './ui/Button'
 import Input, { Select, Textarea } from './ui/Input'
 
 const NAV = [
-  ['Overview', '/admin'],
-  ['Events', '/admin/events'],
-  ['Blogs', '/admin/blogs'],
-  ['Newsletters', '/admin/newsletters'],
-  ['Careers', '/admin/careers'],
-  ['Applications', '/admin/applications'],
-  ['Registrations', '/admin/registrations'],
-  ['Team', '/admin/team'],
-  ['Messages', '/admin/messages'],
-  ['Media', '/admin/media'],
-  ['Admins', '/admin/admins', 'super-admin'],
+  ['Overview', 'overview'],
+  ['Events', 'events'],
+  ['Blogs', 'blogs'],
+  ['Newsletters', 'newsletters'],
+  ['Careers', 'careers'],
+  ['Applications', 'applications'],
+  ['Registrations', 'registrations'],
+  ['Team', 'team'],
+  ['Messages', 'messages'],
+  ['Media', 'media'],
+  ['Admins', 'admins', 'super-admin'],
 ]
 
 const CONFIG = {
@@ -94,6 +94,7 @@ const CONFIG = {
 }
 
 function pageFromPath(path) {
+  if (!path?.startsWith('/admin')) return 'overview'
   return path.replace('/admin/', '') || 'overview'
 }
 
@@ -148,26 +149,24 @@ function AdminLogin({ onLogin }) {
   }
 
   return (
-    <main className="admin-login-shell">
-      <form onSubmit={submit} className="admin-login-card">
-        <span className="admin-kicker">JV EdTech CMS</span>
-        <h1>{mode === 'change' ? 'Change password' : 'Admin login'}</h1>
-        <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Secure access for website content management.'}</p>
-        {mode === 'login' ? (
-          <>
-            <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" />
-            <Input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Password" type="password" />
-          </>
-        ) : (
-          <>
-            <Input value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Current Password" type="password" />
-            <Input value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="New Password" type="password" />
-          </>
-        )}
-        {error && <div className="admin-error">{error}</div>}
-        <Button type="submit" className="w-full">{mode === 'change' ? 'Update Password' : 'Login'}</Button>
-      </form>
-    </main>
+    <form onSubmit={submit} className="admin-login-card">
+      <span className="admin-kicker">JV EdTech CMS</span>
+      <h1>{mode === 'change' ? 'Change password' : 'Admin login'}</h1>
+      <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Secure access for website content management inside the current website.'}</p>
+      {mode === 'login' ? (
+        <>
+          <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" />
+          <Input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Password" type="password" />
+        </>
+      ) : (
+        <>
+          <Input value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Current Password" type="password" />
+          <Input value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="New Password" type="password" />
+        </>
+      )}
+      {error && <div className="admin-error">{error}</div>}
+      <Button type="submit" className="w-full">{mode === 'change' ? 'Update Password' : 'Login'}</Button>
+    </form>
   )
 }
 
@@ -460,40 +459,83 @@ function AdminUsers() {
   )
 }
 
-export default function AdminPanel({ currentPath }) {
+export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
   const [user, setUser] = useState(null)
   const [checking, setChecking] = useState(true)
-  const page = pageFromPath(currentPath)
+  const [page, setPage] = useState(() => pageFromPath(currentPath))
 
   useEffect(() => {
+    if (!isOpen) return
     apiFetch('/api/auth/me').then((data) => setUser(data.user)).catch(() => setUser(null)).finally(() => setChecking(false))
-  }, [])
+  }, [isOpen])
 
-  if (checking) return <main className="admin-login-shell"><div className="admin-login-card">Loading...</div></main>
-  if (!user) return <AdminLogin onLogin={setUser} />
+  useEffect(() => {
+    if (currentPath?.startsWith('/admin')) {
+      setPage(pageFromPath(currentPath))
+    }
+  }, [currentPath])
+
+  if (!isOpen) return null
+
+  const loginLayer = (content) => (
+    <div className="admin-layer" role="dialog" aria-modal="true" aria-label="Admin login">
+      <button className="admin-layer-backdrop" type="button" aria-label="Close admin login" onClick={onClose} />
+      <section className="admin-layer-login">
+        <button className="admin-layer-close" type="button" onClick={onClose}>Close</button>
+        {content}
+      </section>
+    </div>
+  )
+
+  if (checking) return loginLayer(<div className="admin-login-card">Loading...</div>)
+  if (!user) return loginLayer(<AdminLogin onLogin={setUser} />)
 
   const canSee = (item) => !item[2] || item[2] === user.role
   const logout = () => {
     localStorage.removeItem('jvedtech_admin_token')
     setUser(null)
+    setPage('overview')
   }
 
   return (
-    <main className="admin-shell">
-      <aside className="admin-sidebar">
-        <div className="admin-brand">JV<span>Admin</span></div>
-        <nav>{NAV.filter(canSee).map(([label, href]) => <a key={href} href={href} className={currentPath === href ? 'active' : ''}>{label}</a>)}</nav>
-        <button onClick={logout}>Logout</button>
-      </aside>
-      <section className="admin-main">
-        {page === 'overview' && <Dashboard />}
-        {CONFIG[page] && <ContentManager type={page} />}
-        {page === 'applications' && <ListManager title="Applications" endpoint="/api/admin/applications" columns={['name', 'email', 'phone', 'appliedRole']} />}
-        {page === 'registrations' && <ListManager title="Registrations" endpoint="/api/admin/registrations" columns={['name', 'email', 'phone', 'organization', 'eventName']} />}
-        {page === 'messages' && <ListManager title="Messages" endpoint="/api/admin/messages" columns={['name', 'email', 'subject', 'message']} />}
-        {page === 'media' && <MediaLibrary />}
-        {page === 'admins' && user.role === 'super-admin' && <AdminUsers />}
-      </section>
-    </main>
+    <div className="admin-layer" role="dialog" aria-modal="true" aria-label="JV EdTech admin management layer">
+      <button className="admin-layer-backdrop" type="button" aria-label="Close admin controls" onClick={onClose} />
+      <main className="admin-shell admin-layer-panel">
+        <header className="admin-layer-topbar">
+          <div>
+            <span className="admin-kicker">Secure management layer</span>
+            <strong>Manage JV EdTech content without leaving the website</strong>
+          </div>
+          <button className="admin-layer-close" type="button" onClick={onClose}>Close</button>
+        </header>
+        <div className="admin-layer-body">
+          <aside className="admin-sidebar">
+            <div className="admin-brand">JV<span>Admin</span></div>
+            <nav>
+              {NAV.filter(canSee).map(([label, nextPage]) => (
+                <button
+                  key={nextPage}
+                  type="button"
+                  onClick={() => setPage(nextPage)}
+                  className={page === nextPage ? 'active' : ''}
+                >
+                  {label}
+                </button>
+              ))}
+            </nav>
+            <button onClick={logout}>Logout</button>
+          </aside>
+          <section className="admin-main">
+            {page === 'overview' && <Dashboard />}
+            {CONFIG[page] && <ContentManager type={page} />}
+            {page === 'applications' && <ListManager title="Applications" endpoint="/api/admin/applications" columns={['name', 'email', 'phone', 'appliedRole']} />}
+            {page === 'registrations' && <ListManager title="Registrations" endpoint="/api/admin/registrations" columns={['name', 'email', 'phone', 'organization', 'eventName']} />}
+            {page === 'messages' && <ListManager title="Messages" endpoint="/api/admin/messages" columns={['name', 'email', 'subject', 'message']} />}
+            {page === 'media' && <MediaLibrary />}
+            {page === 'admins' && user.role === 'super-admin' && <AdminUsers />}
+          </section>
+        </div>
+      </main>
+    </div>
   )
 }
