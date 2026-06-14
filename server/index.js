@@ -18,7 +18,7 @@ dotenv.config({
     : path.join(__dirname, '..', '.env.development'),
 })
 
-const app = express()
+export const app = express()
 const PORT = process.env.PORT || 4001
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/jvedtech'
 const JWT_SECRET = process.env.JWT_SECRET || 'replace-this-secret-before-production'
@@ -744,7 +744,12 @@ app.use((error, req, res, next) => {
   res.status(error.status || 500).json({ error: error.message || 'Server error' })
 })
 
-async function startServer() {
+let initPromise
+
+export async function initializeServer() {
+  if (initPromise) return initPromise
+
+  initPromise = (async () => {
   if (USE_JSON_FALLBACK) {
     storageMode = 'json'
     useJsonStorage()
@@ -763,10 +768,19 @@ async function startServer() {
 
   await seedSuperAdmin()
   await seedExistingContent()
+  })()
+
+  return initPromise
+}
+
+async function startServer() {
+  await initializeServer()
   app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`))
 }
 
-startServer().catch((error) => {
-  console.error('Server startup failed', error)
-  process.exit(1)
-})
+if (process.argv[1] && path.resolve(process.argv[1]) === __filename) {
+  startServer().catch((error) => {
+    console.error('Server startup failed', error)
+    process.exit(1)
+  })
+}
