@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useState } from 'react'
-import { API_BASE, apiFetch } from '../utils/api'
+import { API_BASE, apiFetch, clearAdminSession, getAdminToken, setAdminToken } from '../utils/api'
 import Button from './ui/Button'
 import Input, { Select, Textarea } from './ui/Input'
 
@@ -114,7 +114,7 @@ function Toast({ message }) {
 
 function AdminLogin({ onLogin }) {
   const [mode, setMode] = useState('login')
-  const [form, setForm] = useState({ username: 'Admin@Jvedtech', password: 'Jvedtech@admin1', currentPassword: '', newPassword: '' })
+  const [form, setForm] = useState({ username: '', password: '', currentPassword: '', newPassword: '' })
   const [user, setUser] = useState(null)
   const [error, setError] = useState('')
 
@@ -127,7 +127,8 @@ function AdminLogin({ onLogin }) {
           method: 'POST',
           body: JSON.stringify({ currentPassword: form.currentPassword, newPassword: form.newPassword }),
         })
-        localStorage.setItem('jvedtech_admin_token', data.token)
+        setAdminToken(data.token)
+        setForm({ username: '', password: '', currentPassword: '', newPassword: '' })
         onLogin(data.user)
         return
       }
@@ -135,12 +136,13 @@ function AdminLogin({ onLogin }) {
         method: 'POST',
         body: JSON.stringify({ username: form.username, password: form.password }),
       })
-      localStorage.setItem('jvedtech_admin_token', data.token)
+      setAdminToken(data.token)
       if (data.user.mustChangePassword) {
         setUser(data.user)
         setMode('change')
-        setForm((prev) => ({ ...prev, currentPassword: prev.password, newPassword: '' }))
+        setForm({ username: '', password: '', currentPassword: '', newPassword: '' })
       } else {
+        setForm({ username: '', password: '', currentPassword: '', newPassword: '' })
         onLogin(data.user)
       }
     } catch (err) {
@@ -149,19 +151,19 @@ function AdminLogin({ onLogin }) {
   }
 
   return (
-    <form onSubmit={submit} className="admin-login-card">
+    <form onSubmit={submit} className="admin-login-card" autoComplete="on">
       <span className="admin-kicker">JV EdTech CMS</span>
       <h1>{mode === 'change' ? 'Change password' : 'Admin login'}</h1>
       <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Secure access for website content management inside the current website.'}</p>
       {mode === 'login' ? (
         <>
-          <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" />
-          <Input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Password" type="password" />
+          <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" autoComplete="username" />
+          <Input value={form.password} onChange={(e) => setForm({ ...form, password: e.target.value })} placeholder="Password" type="password" autoComplete="current-password" />
         </>
       ) : (
         <>
-          <Input value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Current Password" type="password" />
-          <Input value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="New Password" type="password" />
+          <Input value={form.currentPassword} onChange={(e) => setForm({ ...form, currentPassword: e.target.value })} placeholder="Current Password" type="password" autoComplete="current-password" />
+          <Input value={form.newPassword} onChange={(e) => setForm({ ...form, newPassword: e.target.value })} placeholder="New Password" type="password" autoComplete="new-password" />
         </>
       )}
       {error && <div className="admin-error">{error}</div>}
@@ -320,7 +322,7 @@ function ListManager({ title, endpoint, columns, statusEndpoint }) {
   }
 
   async function download(format) {
-    const token = localStorage.getItem('jvedtech_admin_token')
+    const token = getAdminToken()
     const response = await fetch(`${API_BASE}/api/admin/registrations/export.${format}`, {
       headers: { Authorization: `Bearer ${token}` },
     })
@@ -467,7 +469,14 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
 
   useEffect(() => {
     if (!isOpen) return
-    apiFetch('/api/auth/me').then((data) => setUser(data.user)).catch(() => setUser(null)).finally(() => setChecking(false))
+    setChecking(true)
+    apiFetch('/api/auth/me')
+      .then((data) => setUser(data.user))
+      .catch(() => {
+        clearAdminSession()
+        setUser(null)
+      })
+      .finally(() => setChecking(false))
   }, [isOpen])
 
   useEffect(() => {
@@ -493,7 +502,7 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
 
   const canSee = (item) => !item[2] || item[2] === user.role
   const logout = () => {
-    localStorage.removeItem('jvedtech_admin_token')
+    clearAdminSession()
     setUser(null)
     setPage('overview')
   }

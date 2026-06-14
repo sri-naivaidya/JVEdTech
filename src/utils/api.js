@@ -1,7 +1,33 @@
-export const API_BASE = import.meta.env.VITE_API_BASE || ''
+export const API_BASE = import.meta.env?.VITE_API_BASE || ''
+export const ADMIN_TOKEN_KEY = 'jvedtech_admin_token'
+const AUTH_STORAGE_PATTERNS = ['jvedtech_admin', 'admin_token', 'auth_token', 'jwt']
+
+export function getAdminToken() {
+  return localStorage.getItem(ADMIN_TOKEN_KEY)
+}
+
+export function setAdminToken(token) {
+  localStorage.setItem(ADMIN_TOKEN_KEY, token)
+}
+
+export function clearAdminSession() {
+  const clearMatchingKeys = (storage) => {
+    for (let index = storage.length - 1; index >= 0; index -= 1) {
+      const key = storage.key(index)
+      if (key && AUTH_STORAGE_PATTERNS.some((pattern) => key.toLowerCase().includes(pattern))) {
+        storage.removeItem(key)
+      }
+    }
+  }
+
+  localStorage.removeItem(ADMIN_TOKEN_KEY)
+  sessionStorage.removeItem(ADMIN_TOKEN_KEY)
+  clearMatchingKeys(localStorage)
+  clearMatchingKeys(sessionStorage)
+}
 
 export async function apiFetch(path, options = {}) {
-  const token = localStorage.getItem('jvedtech_admin_token')
+  const token = getAdminToken()
   const headers = { ...(options.headers || {}) }
 
   if (!(options.body instanceof FormData) && !headers['Content-Type']) {

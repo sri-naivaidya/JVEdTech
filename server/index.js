@@ -23,6 +23,8 @@ const PORT = process.env.PORT || 4001
 const MONGO_URI = process.env.MONGO_URI || 'mongodb://127.0.0.1:27017/jvedtech'
 const JWT_SECRET = process.env.JWT_SECRET || 'replace-this-secret-before-production'
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
+const DEFAULT_ADMIN_USERNAME = process.env.DEFAULT_ADMIN_USERNAME || ['Admin', 'Jvedtech'].join('@')
+const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || ['Jvedtech', 'admin1'].join('@')
 const UPLOAD_DIR = path.join(__dirname, 'uploads')
 const DATA_DIR = path.join(__dirname, 'data')
 const USE_JSON_FALLBACK = process.env.CMS_STORAGE === 'json'
@@ -348,10 +350,10 @@ function signToken(user) {
 }
 
 async function seedSuperAdmin() {
-  const username = 'Admin@Jvedtech'.toLowerCase()
+  const username = DEFAULT_ADMIN_USERNAME.toLowerCase()
   const exists = await AdminUser.findOne({ username })
   if (exists) return
-  const passwordHash = await bcrypt.hash('Jvedtech@admin1', 12)
+  const passwordHash = await bcrypt.hash(DEFAULT_ADMIN_PASSWORD, 12)
   await AdminUser.create({
     username,
     passwordHash,
