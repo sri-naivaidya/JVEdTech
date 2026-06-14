@@ -192,7 +192,7 @@ function AdminLogin({ onLogin }) {
     <form onSubmit={submit} className="admin-login-card" autoComplete="on">
       <span className="admin-kicker">JV EdTech CMS</span>
       <h1>{mode === 'change' ? 'Change password' : 'Admin login'}</h1>
-      <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Secure access for website content management inside the current website.'}</p>
+      <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Sign in to continue.'}</p>
       {mode === 'login' ? (
         <>
           <Input value={form.username} onChange={(e) => setForm({ ...form, username: e.target.value })} placeholder="Username" autoComplete="username" />
@@ -232,7 +232,7 @@ function Dashboard() {
       <div className="admin-page-header">
         <span className="admin-kicker">Overview</span>
         <h1>Dashboard</h1>
-        <p>Manage the JV EdTech website from one premium control center.</p>
+        <p>Website administration and content management.</p>
       </div>
       <div className="admin-stats-grid">
         {cards.map(([label, value]) => (
@@ -628,8 +628,7 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
       <main className="admin-shell admin-layer-panel">
         <header className="admin-layer-topbar">
           <div>
-            <span className="admin-kicker">Secure management layer</span>
-            <strong>Manage JV EdTech content without leaving the website</strong>
+            <span className="admin-kicker">Admin</span>
           </div>
           <button className="admin-layer-close" type="button" onClick={onClose}>Close</button>
         </header>
