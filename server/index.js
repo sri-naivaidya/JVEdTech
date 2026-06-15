@@ -25,17 +25,20 @@ const JWT_SECRET = process.env.JWT_SECRET || 'replace-this-secret-before-product
 const CLIENT_ORIGIN = process.env.CLIENT_ORIGIN || 'http://localhost:5173'
 const DEFAULT_ADMIN_USERNAME = process.env.DEFAULT_ADMIN_USERNAME || ['Admin', 'Jvedtech'].join('@')
 const DEFAULT_ADMIN_PASSWORD = process.env.DEFAULT_ADMIN_PASSWORD || ['Jvedtech', 'admin1'].join('@')
+const IS_VERCEL = Boolean(process.env.VERCEL)
 const UPLOAD_DIR = path.join(__dirname, 'uploads')
 const DATA_DIR = path.join(__dirname, 'data')
-const USE_JSON_FALLBACK = process.env.CMS_STORAGE === 'json'
+const USE_JSON_FALLBACK = !IS_VERCEL && process.env.CMS_STORAGE === 'json'
 
-if (!fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true })
-if (!fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
+if (!IS_VERCEL && !fs.existsSync(UPLOAD_DIR)) fs.mkdirSync(UPLOAD_DIR, { recursive: true })
+if (!IS_VERCEL && !fs.existsSync(DATA_DIR)) fs.mkdirSync(DATA_DIR, { recursive: true })
 
 app.use(cors({ origin: CLIENT_ORIGIN, credentials: true }))
 app.use(express.json({ limit: '10mb' }))
 app.use(express.urlencoded({ extended: true }))
-app.use('/uploads', express.static(UPLOAD_DIR))
+if (!IS_VERCEL) {
+  app.use('/uploads', express.static(UPLOAD_DIR))
+}
 
 mongoose.set('strictQuery', true)
 mongoose.set('bufferCommands', false)
@@ -316,13 +319,18 @@ function useJsonStorage() {
   Activity = new JsonModel('activity')
 }
 
-const storage = multer.diskStorage({
+const storage = IS_VERCEL ? multer.memoryStorage() : multer.diskStorage({
   destination: (req, file, cb) => cb(null, UPLOAD_DIR),
   filename: (req, file, cb) => {
     const safeName = file.originalname.replace(/[^a-zA-Z0-9._-]/g, '-')
     cb(null, `${Date.now()}-${safeName}`)
   },
 })
+
+function rejectLocalUploadsOnVercel(req, res, next) {
+  if (!IS_VERCEL) return next()
+  return res.status(501).json({ error: 'File uploads require persistent storage in production' })
+}
 
 const upload = multer({
   storage,
@@ -613,7 +621,7 @@ app.get('/api/admin/dashboard', requireAuth, async (req, res) => {
   })
 })
 
-app.post('/api/media/upload', requireAuth, upload.single('file'), async (req, res) => {
+app.post('/api/media/upload', requireAuth, rejectLocalUploadsOnVercel, upload.single('file'), async (req, res) => {
   const media = await Media.create({
     filename: req.file.filename,
     originalName: req.file.originalname,
@@ -646,7 +654,7 @@ app.post('/api/register', async (req, res) => {
   res.json({ ok: true, id: payload._id })
 })
 
-app.post('/api/applications', upload.single('resume'), async (req, res) => {
+app.post('/api/applications', rejectLocalUploadsOnVercel, upload.single('resume'), async (req, res) => {
   const { name, email, phone, appliedRole } = req.body
   if (!name || !email || !appliedRole) return res.status(400).json({ error: 'Missing required fields' })
   const payload = await Application.create({
@@ -760,6 +768,9 @@ export async function initializeServer() {
       storageMode = 'mongodb'
       console.log('CMS storage: MongoDB')
     } catch (error) {
+      if (IS_VERCEL) {
+        throw new Error(`MongoDB connection failed in production: ${error.message}`)
+      }
       storageMode = 'json'
       useJsonStorage()
       console.warn(`MongoDB unavailable, using local JSON fallback: ${error.message}`)
