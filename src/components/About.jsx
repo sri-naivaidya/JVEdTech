@@ -60,7 +60,7 @@ const TEAM_MEMBERS = [
     name: 'Mr. Sajin Santhosh',
     title: 'Business Development Analyst',
     href: 'https://www.linkedin.com/in/sajin-santhosh-985a99194/',
-    image: '/Mr. Sajin Santhosh .png',
+    image: '/Sajin Santhosh.png',
   },
   {
     name: 'Mr. Abdul Wasim Sheikh',
@@ -91,6 +91,78 @@ const TEAM_MEMBERS = [
     title: 'Business Development Analyst',
     href: 'https://www.linkedin.com/in/aryaa-praseed-62a301304/',
     image: '/Ms. Aryaa Praseed .png',
+  },
+  {
+    name: 'Ms. Nithya Kalyani',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/nithya-kalyani-pmp-69b027a/',
+    image: '/Ms. Nithya Kalyani.png',
+  },
+  {
+    name: 'Dr. Annu Bijarnia',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/dr-annu-bijarnia-pt-77829033/',
+    image: '/Dr. Annu Bijarnia.png',
+  },
+  {
+    name: 'Dr. Jyoti Dongre Rao',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/dr-jyoti-dongre-rao-11520726/',
+    image: '/Dr.  Jyoti Dongre Rao.jpeg',
+  },
+  {
+    name: 'Ms. Bonti JA',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/bonti-j-a-39a602aa/',
+    image: '/Ms. Bonti JA.jpeg',
+  },
+  {
+    name: 'Bipin Ku. Rathod',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/bipinkumar-rathod-b900b414/',
+    image: '/Bipin kumar Rathod pic.png',
+  },
+  {
+    name: 'Anreet Kaur',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/anreetkaur/',
+    image: '/Ms Anreet Kaur.png',
+  },
+  {
+    name: 'Abhineet Priyam',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/abhineet-priyam-8133721a7/',
+    image: '/Abhineet Priyam pic.jpeg',
+  },
+  {
+    name: 'Avinash Vk',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/avinash-v-k/',
+    image: '/Avinash VK.png',
+  },
+  {
+    name: 'Kushal Kavi',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/kushal-kavi-86542a130/',
+    image: '/Kushal Kavi.png',
+  },
+  {
+    name: 'Abhiruchi Kunte',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/abhiruchi-kunte-00602b28b/',
+    image: '/Abhiruchi Kunte.png',
+  },
+  {
+    name: 'Skanda Patni',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/skanda-patni-875785253/',
+    image: '/Skanda Patni.jpeg',
+  },
+  {
+    name: 'Sunal Singh',
+    title: 'Business Development Analyst',
+    href: 'https://www.linkedin.com/in/sunalsingh/',
+    image: 'Sunal Singh.png',
   },
 ]
 
