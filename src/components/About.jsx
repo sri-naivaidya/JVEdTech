@@ -3,6 +3,7 @@ import { motion } from 'framer-motion'
 import SectionHeader from './ui/SectionHeader'
 import Reveal from './ui/Reveal'
 import TiltCard from './ui/TiltCard'
+import useCmsContent from '../hooks/useCmsContent'
 
 const PILLARS = [
   {
@@ -290,6 +291,13 @@ const HIGHLIGHTS = [
 ]
 
 export default function About() {
+  const cmsTeam = useCmsContent('/api/public/team', TEAM_MEMBERS)
+  const teamMembers = cmsTeam.map((member) => ({
+    ...member,
+    title: member.title || member.designation,
+    href: member.href || member.linkedin || '#',
+  }))
+
   return (
     <section id="about" className="section-padding section-surface-blue relative overflow-hidden">
       <div className="pointer-events-none absolute inset-0 mesh-gradient opacity-50" />
@@ -411,6 +419,7 @@ export default function About() {
             align="center"
           />
 
+      
           <TeamCarousel />
         </div>
       </div>

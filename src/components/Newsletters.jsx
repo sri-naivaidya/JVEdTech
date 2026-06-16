@@ -3,8 +3,17 @@ import VisualBackground from './VisualBackground'
 import Reveal from './ui/Reveal'
 import TiltCard from './ui/TiltCard'
 import AnimatedText from './ui/AnimatedText'
+import useCmsContent from '../hooks/useCmsContent'
 
 export default function Newsletters() {
+  const cmsNewsletters = useCmsContent('/api/public/newsletters', NEWSLETTERS)
+  const newsletters = cmsNewsletters.map((item, index) => ({
+    ...item,
+    id: item.id || item._id || `${item.month}-${item.year}-${index}`,
+    published: item.published || `Published: ${item.month || ''} ${item.year || ''}`.trim(),
+    href: item.href || item.pdfFile || '#',
+  }))
+
   return (
     <main className="resource-page relative min-h-screen overflow-hidden pt-28">
       <VisualBackground />
@@ -29,7 +38,7 @@ export default function Newsletters() {
               <div className="resource-orbit resource-orbit-a" />
               <div className="resource-orbit resource-orbit-b" />
               <div className="resource-stack">
-                {NEWSLETTERS.slice(0, 4).map((newsletter) => (
+                {newsletters.slice(0, 4).map((newsletter) => (
                   <span key={newsletter.id}>{newsletter.published.replace('Published: ', '')}</span>
                 ))}
               </div>
@@ -37,7 +46,7 @@ export default function Newsletters() {
           </div>
 
           <div className="mt-12 grid gap-6 sm:grid-cols-2 lg:grid-cols-3">
-            {NEWSLETTERS.map((newsletter, index) => (
+            {newsletters.map((newsletter, index) => (
               <Reveal key={newsletter.id} delay={index * 0.08}>
                 <TiltCard className="group h-full">
                   <div className="resource-premium-card flex h-full flex-col overflow-hidden rounded-2xl">

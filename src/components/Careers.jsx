@@ -6,6 +6,8 @@ import Reveal from './ui/Reveal'
 import Button from './ui/Button'
 import Input, { Textarea, Select } from './ui/Input'
 import TiltCard from './ui/TiltCard'
+import useCmsContent from '../hooks/useCmsContent'
+import { apiFetch } from '../utils/api'
 
 function ValueCard({ value, delay }) {
   return (
@@ -104,17 +106,22 @@ function JobCard({ job, index }) {
 
 export default function Careers() {
   const [applicationSent, setApplicationSent] = useState(false)
+  const cmsJobs = useCmsContent('/api/public/careers', OPEN_POSITIONS)
+  const jobs = cmsJobs.map((job, index) => ({
+    ...job,
+    id: job.id || job._id || index,
+    title: job.title || job.role,
+    summary: job.summary || job.description,
+    skills: job.skills || String(job.requirements || '').split('\n').filter(Boolean),
+  }))
 
-  const handleApplicationSubmit = (e) => {
+  const handleApplicationSubmit = async (e) => {
     e.preventDefault()
-    const formData = new FormData(e.currentTarget)
-    const payload = Object.fromEntries(formData.entries())
-
     try {
-      const key = 'jvedtech_career_applications'
-      const stored = JSON.parse(localStorage.getItem(key) || '[]')
-      stored.push({ ...payload, date: new Date().toISOString() })
-      localStorage.setItem(key, JSON.stringify(stored))
+      const formData = new FormData(e.currentTarget)
+      formData.set('name', `${formData.get('firstName')} ${formData.get('lastName')}`.trim())
+      formData.set('appliedRole', formData.get('role'))
+      await apiFetch('/api/applications', { method: 'POST', body: formData, headers: {} })
       setApplicationSent(true)
       e.currentTarget.reset()
     } catch (error) {
@@ -194,7 +201,7 @@ export default function Careers() {
           />
 
           <div className="mt-10 space-y-4">
-            {OPEN_POSITIONS.map((job, index) => (
+            {jobs.map((job, index) => (
               <JobCard key={job.id} job={job} index={index} />
             ))}
           </div>
@@ -266,7 +273,7 @@ export default function Careers() {
 
                   <Select required name="role" defaultValue="">
                     <option value="">Select a role</option>
-                    {OPEN_POSITIONS.map((job) => (
+                    {jobs.map((job) => (
                       <option key={job.id} value={job.title}>
                         {job.title}
                       </option>
@@ -274,6 +281,7 @@ export default function Careers() {
                   </Select>
 
                   <Textarea required name="message" placeholder="Tell us why you're a great fit..." rows={3} />
+                  <Input name="resume" type="file" accept=".pdf,.doc,.docx" />
 
                   <Button type="submit" variant="primary" className="w-full">
                     Submit Application
