@@ -103,11 +103,11 @@ export default function PremiumNavbar({ currentPath = '/', onAdminOpen }) {
           >
             <img
               src="/jvedtech-logo.png"
-              alt="JV EdTech"
+              alt="JVedtech"
               className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
             />
             <span className="font-display text-lg font-bold tracking-tight text-foreground">
-              JVED<span className="text-gradient">TECH</span>
+              JV<span className="text-gradient">edtech</span>
             </span>
           </a>
 

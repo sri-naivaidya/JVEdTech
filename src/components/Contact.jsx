@@ -16,7 +16,7 @@ export default function Contact() {
               dark
               label="Get In Touch"
               title="Let's Have a Talk"
-              description="Reach out for partnerships, training programs, technology solutions, or to learn how JVEDTECH Medovation can support your healthcare goals."
+              description="Reach out for partnerships, training programs, technology solutions, or to learn how JVedtech Medovation can support your healthcare goals."
             />
 
             <ul className="mt-12 space-y-6 text-white/80">

@@ -59,7 +59,7 @@ export default function Hero() {
           </h1>
 
           <p className="hero-sub mt-7 max-w-lg text-base leading-[1.75] text-white/75 sm:text-lg">
-            JV EdTech Medovation bridges compassion and technology — empowering
+            JVedtech Medovation bridges compassion and technology — empowering
             professionals through AI-driven education, clinical informatics, and
             digital health innovation.
           </p>

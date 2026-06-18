@@ -18,7 +18,7 @@ export default function BlogArticle({ blogId }) {
       setBlog({
         ...item,
         id: item._id,
-        topic: `Topic: ${item.category || 'JV EdTech'}`,
+        topic: `Topic: ${item.category || 'JVedtech'}`,
         date: `Date: ${new Date(item.createdAt).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
         href: `/blogs/${item.slug}`,
       })

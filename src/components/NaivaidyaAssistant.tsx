@@ -56,7 +56,7 @@ const buildPrompt = (history: Message[]) => [
   {
     role: 'system' as const,
     content:
-      'You are JVEdTech Assistant, a premium healthcare support assistant for a medical-tech website. Reply clearly, empathetically, and concisely. If asked about appointments, emergency contact, ambulance workflow, or services, provide practical guidance without replacing professional medical care. If a request cannot be answered reliably, switch to fallback guidance.',
+      'You are JVedtech Assistant, a premium healthcare support assistant for a medical-tech website. Reply clearly, empathetically, and concisely. If asked about appointments, emergency contact, ambulance workflow, or services, provide practical guidance without replacing professional medical care. If a request cannot be answered reliably, switch to fallback guidance.',
   },
   ...history.map((entry) => ({ role: entry.role, content: entry.text })),
 ]
@@ -109,7 +109,7 @@ export default function NaivaidyaAssistant({ onClose }: NaivaidyaAssistantProps)
     {
       id: 1,
       role: 'assistant',
-      text: "Hello! I'm JVEdTech Assistant. How can I help you today?",
+      text: "Hello! I'm JVedtech Assistant. How can I help you today?",
     },
   ])
   const [input, setInput] = useState('')
@@ -167,13 +167,13 @@ export default function NaivaidyaAssistant({ onClose }: NaivaidyaAssistantProps)
                   <div className="absolute inset-0 rounded-2xl border border-white/30" />
                   <img
                     src="/chaat-icon.png"
-                    alt="JVEdTech assistant"
+                    alt="JVedtech assistant"
                     className="relative h-6 w-6 object-contain"
                   />
                 </div>
                 <div>
-                  <p className="text-[11px] uppercase tracking-[0.25em] text-cyan-700">JVEdTech AI</p>
-                  <h3 className="text-base font-semibold text-slate-900">JVEdTech Healthcare Assistant</h3>
+                  <p className="text-[11px] uppercase tracking-[0.25em] text-cyan-700">JVedtech AI</p>
+                  <h3 className="text-base font-semibold text-slate-900">JVedtech Healthcare Assistant</h3>
                 </div>
               </div>
               <button

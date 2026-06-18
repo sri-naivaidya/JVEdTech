@@ -14,6 +14,7 @@ const NAV = [
   ['Team', 'team'],
   ['Messages', 'messages'],
   ['Media', 'media'],
+  ['Database Explorer', 'database'],
   ['Account', 'account'],
   ['Admins', 'admins', 'super-admin'],
 ]
@@ -190,7 +191,7 @@ function AdminLogin({ onLogin }) {
 
   return (
     <form onSubmit={submit} className="admin-login-card" autoComplete="on">
-      <span className="admin-kicker">JV EdTech CMS</span>
+      <span className="admin-kicker">JVedtech CMS</span>
       <h1>{mode === 'change' ? 'Change password' : 'Admin login'}</h1>
       <p>{mode === 'change' ? `Welcome ${user?.username}. Create a new password to continue.` : 'Sign in to continue.'}</p>
       {mode === 'login' ? (
@@ -451,6 +452,55 @@ function MediaLibrary() {
   )
 }
 
+function DatabaseExplorer() {
+  const [data, setData] = useState(null)
+
+  useEffect(() => {
+    apiFetch('/api/admin/database-explorer').then(setData).catch(() => setData({ counts: {}, communityLinks: [] }))
+  }, [])
+
+  const rows = [
+    ['Storage mode', data?.storage || '...'],
+    ['Team Members', data?.counts?.teamMembers],
+    ['Events', data?.counts?.events],
+    ['Careers', data?.counts?.careers],
+    ['Community Links', data?.counts?.communityLinks],
+    ['Contact Messages', data?.counts?.contactMessages],
+    ['Event Registrations', data?.counts?.registrations],
+    ['Career Applications', data?.counts?.applications],
+  ]
+
+  return (
+    <section>
+      <div className="admin-page-header">
+        <span className="admin-kicker">Read only</span>
+        <h1>Database Explorer</h1>
+        <p>Operational record overview.</p>
+      </div>
+      <div className="admin-panel-card">
+        <div className="admin-stats-grid">
+          {rows.map(([label, value]) => (
+            <div key={label} className="admin-stat-card">
+              <span>{label}</span>
+              <strong>{value ?? '...'}</strong>
+            </div>
+          ))}
+        </div>
+        <div className="mt-6">
+          <h2>Community Links</h2>
+          <div className="admin-media-grid">
+            {(data?.communityLinks || []).map((href) => (
+              <a key={href} href={href} target="_blank" rel="noreferrer" className="admin-media-card">
+                {href}
+              </a>
+            ))}
+          </div>
+        </div>
+      </div>
+    </section>
+  )
+}
+
 function AdminUsers() {
   const [items, setItems] = useState([])
   const [editing, setEditing] = useState(null)
@@ -623,7 +673,7 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
   }
 
   return (
-    <div className="admin-layer" role="dialog" aria-modal="true" aria-label="JV EdTech admin management layer">
+    <div className="admin-layer" role="dialog" aria-modal="true" aria-label="JVedtech admin management layer">
       <button className="admin-layer-backdrop" type="button" aria-label="Close admin controls" onClick={onClose} />
       <main className="admin-shell admin-layer-panel">
         <header className="admin-layer-topbar">
@@ -656,6 +706,7 @@ export default function AdminPanel({ currentPath, isOpen = false, onClose }) {
             {page === 'registrations' && <ListManager title="Registrations" endpoint="/api/admin/registrations" columns={['name', 'email', 'phone', 'organization', 'eventName']} />}
             {page === 'messages' && <ListManager title="Messages" endpoint="/api/admin/messages" columns={['name', 'email', 'subject', 'message']} />}
             {page === 'media' && <MediaLibrary />}
+            {page === 'database' && <DatabaseExplorer />}
             {page === 'account' && <AccountSecurity />}
             {page === 'admins' && user.role === 'super-admin' && <AdminUsers />}
           </section>

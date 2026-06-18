@@ -105,7 +105,7 @@ export default function Services() {
           />
           <Reveal delay={0.1}>
             <p className="mt-6 text-base leading-relaxed text-emerald-900-muted">
-              JVEDTECH Medovation is at the forefront of the healthcare sector, delivering exceptional services in education, patient care, digital advertising, and medical product import-export. We empower growth and transformation for healthcare organizations, professionals, and patients.
+              JVedtech Medovation is at the forefront of the healthcare sector, delivering exceptional services in education, patient care, digital advertising, and medical product import-export. We empower growth and transformation for healthcare organizations, professionals, and patients.
             </p>
           </Reveal>
         </div>
