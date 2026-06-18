@@ -154,6 +154,168 @@ let Activity = mongoose.model('Activity', new mongoose.Schema({
   user: String,
 }, { timestamps: true }))
 
+let Setting = mongoose.model('Setting', new mongoose.Schema({
+  key: { type: String, required: true, unique: true },
+  value: String,
+}, baseOptions))
+
+const TEAM_SEED_VERSION = 'team-seed-2026-06-18-v2'
+const TEAM_MEMBER_SEED = [
+  {
+    name: 'Dr. Jyoti Rao',
+    designation: 'Co-Founder & CEO',
+    profileImage: '/team/dr-jyoti-rao.jpeg',
+    linkedin: 'https://www.linkedin.com/in/dr-jyoti-dongre-rao-11520726/',
+    order: 1,
+    status: 'published',
+  },
+  {
+    name: 'Ms. Marilyn Olivera',
+    designation: 'Director Clinical Education and Operations',
+    profileImage: '/team/ms-marilyn-olivera.png',
+    linkedin: 'https://www.linkedin.com/in/marilynolivera/',
+    order: 2,
+    status: 'published',
+  },
+  {
+    name: 'Mr. Dinesh Kamble',
+    designation: 'Board of Director',
+    profileImage: '/team/mr-dinesh-kamble.png',
+    linkedin: 'https://www.linkedin.com/in/dinesh-kamble-a409a06b/',
+    order: 3,
+    status: 'published',
+  },
+  {
+    name: 'Mr. Pravin Nimbolkar',
+    designation: 'Board of Director',
+    profileImage: '/team/mr-pravin-nimbolkar.jpeg',
+    linkedin: '',
+    order: 4,
+    status: 'published',
+  },
+  {
+    name: 'Bipin Kumar Rathod',
+    designation: 'Independent Director - CDIO',
+    profileImage: '/team/bipin-kumar-rathod.png',
+    linkedin: 'https://www.linkedin.com/in/bipinkumar-rathod-b900b414/',
+    order: 5,
+    status: 'published',
+  },
+  {
+    name: 'Ms. Nithya Kalyani',
+    designation: 'Independent Consultant, HR & Operations',
+    profileImage: '/team/ms-nithya-kalyani.png',
+    linkedin: 'https://www.linkedin.com/in/nithya-kalyani-pmp-69b027a/',
+    order: 6,
+    status: 'published',
+  },
+  {
+    name: 'Dr. Annu Bijarnia',
+    designation: 'Associate Director - Holistic Well-being',
+    profileImage: '/team/dr-annu-bijarnia.png',
+    linkedin: 'https://www.linkedin.com/in/dr-annu-bijarnia-pt-77829033/',
+    order: 7,
+    status: 'published',
+  },
+  {
+    name: 'Ms. Bonti JA',
+    designation: 'Strategic Business Consultant',
+    profileImage: '/team/ms-bonti-ja.jpeg',
+    linkedin: 'https://www.linkedin.com/in/bonti-j-a-39a602aa/',
+    order: 8,
+    status: 'published',
+  },
+  {
+    name: 'Anreet Kaur',
+    designation: 'LMS Operations Lead',
+    profileImage: '/team/anreet-kaur.png',
+    linkedin: 'https://www.linkedin.com/in/anreetkaur/',
+    order: 9,
+    status: 'published',
+  },
+  {
+    name: 'Abhineet Priyam',
+    designation: 'Strategic Growth Partner',
+    profileImage: '/team/abhineet-priyam.jpeg',
+    linkedin: 'https://www.linkedin.com/in/abhineet-priyam-8133721a7/',
+    order: 10,
+    status: 'published',
+  },
+  {
+    name: 'Avinash VK',
+    designation: 'Strategic Growth Partner',
+    profileImage: '/team/avinash-vk.png',
+    linkedin: 'https://www.linkedin.com/in/avinash-v-k/',
+    order: 11,
+    status: 'published',
+  },
+  {
+    name: 'Sunal Singh',
+    designation: 'Business Development Analyst',
+    profileImage: '/team/sunal-singh.png',
+    linkedin: 'https://www.linkedin.com/in/sunalsingh/',
+    order: 12,
+    status: 'published',
+  },
+  {
+    name: 'Kushal K',
+    designation: 'Compliance & Operations Manager',
+    profileImage: '/team/kushal-k.png',
+    linkedin: 'https://www.linkedin.com/in/kushal-kavi-86542a130/',
+    order: 13,
+    status: 'published',
+    aliases: ['Kushal Kavi'],
+  },
+  {
+    name: 'Ms. Vinita Deopurkar',
+    designation: 'Associate - Clinical Education',
+    profileImage: '/team/ms-vinita-deopurkar.jpeg',
+    linkedin: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/',
+    order: 14,
+    status: 'published',
+  },
+  {
+    name: 'Skanda Patni',
+    designation: 'Clinical Educational Analyst',
+    profileImage: '/team/skanda-patni.jpeg',
+    linkedin: 'https://www.linkedin.com/in/skanda-patni-875785253/',
+    order: 15,
+    status: 'published',
+  },
+  {
+    name: 'Khushboo Gupta',
+    designation: 'Associate Clinical Education',
+    profileImage: '/team/khushboo-gupta.png',
+    linkedin: '',
+    order: 16,
+    status: 'published',
+  },
+  {
+    name: 'Abhiruchi Kunte',
+    designation: '',
+    profileImage: '/team/abhiruchi-kunte.png',
+    linkedin: 'https://www.linkedin.com/in/abhiruchi-kunte-00602b28b/',
+    order: 17,
+    status: 'published',
+  },
+  {
+    name: 'Shraddha Mishra',
+    designation: '',
+    profileImage: '/team/shraddha-mishra.png',
+    linkedin: 'https://www.linkedin.com/in/shradha16/',
+    order: 18,
+    status: 'published',
+  },
+  {
+    name: 'Hrishikesh Mishra',
+    designation: 'IT Specialist',
+    profileImage: '/team/hrishikesh-mishra.jpeg',
+    linkedin: '',
+    order: 19,
+    status: 'published',
+  },
+]
+
 class JsonQuery {
   constructor(items) {
     this.items = Array.isArray(items) ? [...items] : []
@@ -162,10 +324,12 @@ class JsonQuery {
   sort(sortSpec = {}) {
     const [[key, direction] = ['createdAt', -1]] = Object.entries(sortSpec)
     this.items.sort((a, b) => {
-      const leftDate = Date.parse(a[key])
-      const rightDate = Date.parse(b[key])
-      const left = Number.isNaN(leftDate) ? String(a[key] || '') : leftDate
-      const right = Number.isNaN(rightDate) ? String(b[key] || '') : rightDate
+      const rawLeft = a[key]
+      const rawRight = b[key]
+      const leftDate = typeof rawLeft === 'string' ? Date.parse(rawLeft) : NaN
+      const rightDate = typeof rawRight === 'string' ? Date.parse(rawRight) : NaN
+      const left = typeof rawLeft === 'number' ? rawLeft : Number.isNaN(leftDate) ? String(rawLeft || '') : leftDate
+      const right = typeof rawRight === 'number' ? rawRight : Number.isNaN(rightDate) ? String(rawRight || '') : rightDate
       if (typeof left === 'string' || typeof right === 'string') {
         return direction < 0 ? String(right).localeCompare(String(left)) : String(left).localeCompare(String(right))
       }
@@ -317,6 +481,7 @@ function useJsonStorage() {
   Message = new JsonModel('messages')
   Media = new JsonModel('media')
   Activity = new JsonModel('activity')
+  Setting = new JsonModel('settings')
 }
 
 const storage = IS_VERCEL ? multer.memoryStorage() : multer.diskStorage({
@@ -404,14 +569,32 @@ async function seedExistingContent() {
       { role: 'Clinical Education Analyst', department: 'Clinical', type: 'Full-Time / Part-Time', location: 'Mumbai', description: 'Design, deliver, and evaluate training programmes for clinical staff, ensuring teams stay at the forefront of evidence-based practice.', requirements: 'Curriculum Design\nClinical Knowledge\nE-Learning\nAssessment', status: 'open' },
     ])
   }
-  if (await TeamMember.countDocuments() === 0) {
-    await TeamMember.insertMany([
-      { name: 'Dr. Jyoti Rao', designation: 'Co-Founder & CEO', linkedin: 'https://www.linkedin.com/in/dr-jyoti-dongre-rao-11520726/', order: 1, status: 'published' },
-      { name: 'Ms. Marilyn Olivera', designation: 'Director Clinical Education and Operations', linkedin: 'https://www.linkedin.com/in/marilynolivera/', order: 2, status: 'published' },
-      { name: 'Mr. Dinesh Kamble', designation: 'Board of Director', linkedin: 'https://www.linkedin.com/in/dinesh-k-a409a06b/', order: 3, status: 'published' },
-      { name: 'Ms. Vinita Deopurkar', designation: 'Associate - Clinical Education', linkedin: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/', order: 4, status: 'published' },
-    ])
+  await syncTeamMembersFromAdminSeed()
+}
+
+async function syncTeamMembersFromAdminSeed() {
+  const done = await Setting.findOne({ key: TEAM_SEED_VERSION })
+  if (done) return
+
+  for (const member of TEAM_MEMBER_SEED) {
+    const { aliases = [], ...record } = member
+    let existing = await TeamMember.findOne({ name: record.name })
+    for (const alias of aliases) {
+      if (!existing) existing = await TeamMember.findOne({ name: alias })
+    }
+    if (existing) {
+      Object.assign(existing, {
+        ...record,
+        _id: existing._id,
+        createdAt: existing.createdAt,
+      })
+      await existing.save()
+    } else {
+      await TeamMember.create(record)
+    }
   }
+
+  await Setting.create({ key: TEAM_SEED_VERSION, value: 'done' })
 }
 
 async function logActivity(action, entity, entityId, user) {
@@ -463,10 +646,10 @@ function validateNewPassword(password) {
   return ''
 }
 
-function crudRoutes(pathName, getModel, entityName, { publicFilter = null } = {}) {
+function crudRoutes(pathName, getModel, entityName, { publicFilter = null, adminSort = { createdAt: -1 }, publicSort = { createdAt: -1 } } = {}) {
   app.get(`/api/admin/${pathName}`, requireAuth, async (req, res) => {
     const Model = getModel()
-    const items = await Model.find().sort({ createdAt: -1 })
+    const items = await Model.find().sort(adminSort)
     res.json(items)
   })
 
@@ -504,7 +687,8 @@ function crudRoutes(pathName, getModel, entityName, { publicFilter = null } = {}
   app.get(`/api/public/${pathName}`, async (req, res) => {
     const Model = getModel()
     const query = publicFilter || { status: 'published' }
-    const items = await Model.find(query).sort({ createdAt: -1 })
+    res.set('Cache-Control', 'no-store, no-cache, must-revalidate, proxy-revalidate')
+    const items = await Model.find(query).sort(publicSort)
     res.json(items)
   })
 }
@@ -581,7 +765,11 @@ crudRoutes('events', () => Event, 'event')
 crudRoutes('blogs', () => Blog, 'blog')
 crudRoutes('newsletters', () => Newsletter, 'newsletter')
 crudRoutes('careers', () => Career, 'career', { publicFilter: { status: 'open' } })
-crudRoutes('team', () => TeamMember, 'team-member', { publicFilter: { status: 'published' } })
+crudRoutes('team', () => TeamMember, 'team-member', {
+  publicFilter: { status: 'published' },
+  adminSort: { order: 1 },
+  publicSort: { order: 1 },
+})
 
 app.get('/api/public/blogs/:slug', async (req, res) => {
   const item = await Blog.findOne({ slug: req.params.slug, status: 'published' })

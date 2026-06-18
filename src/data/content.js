@@ -195,6 +195,7 @@ export const CONTACT_INFO = {
   phone: '+91 - 86556 07722',
   address: 'A/14 Plot No.2 Suryadarsha, N CHS Mhada Colony Mulund East, Mumbai, Mumbai - 400081.',
   whatsapp: 'https://chat.whatsapp.com/FcfH0eRIk7rCeL5dsOzcf2',
+  whatsappSecondary: 'https://chat.whatsapp.com/GC0KGjrghqeLUxJYgdIkPq?s=sw&p=i&ilr=0',
   linkedin: 'https://www.linkedin.com/company/jv-edtech-medovation',
 };
 
