@@ -101,9 +101,11 @@ export default function PremiumNavbar({ currentPath = '/', onAdminOpen }) {
             onClick={() => handleNavClick('home')}
             className="group flex items-center gap-3 no-underline"
           >
-            <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-300 via-white to-green-300 text-sm font-bold text-foreground shadow-md shadow-brand-300/30 transition-transform duration-300 group-hover:scale-105">
-              JV
-            </span>
+            <img
+              src="/jvedtech-logo.png"
+              alt="JV EdTech"
+              className="h-12 w-auto object-contain transition-transform duration-300 group-hover:scale-105"
+            />
             <span className="font-display text-lg font-bold tracking-tight text-foreground">
               JVED<span className="text-gradient">TECH</span>
             </span>

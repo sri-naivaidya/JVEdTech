@@ -37,7 +37,7 @@ export async function apiFetch(path, options = {}) {
 
   let response
   try {
-    response = await fetch(`${API_BASE}${path}`, { ...options, headers })
+    response = await fetch(`${API_BASE}${path}`, { cache: 'no-store', ...options, headers })
   } catch {
     throw new Error('Unable to connect to server')
   }

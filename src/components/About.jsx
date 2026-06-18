@@ -26,75 +26,6 @@ const PILLARS = [
   },
 ]
 
-const TEAM_MEMBERS = [
-  {
-    name: 'Dr. Jyoti Rao',
-    title: 'Co-Founder & CEO',
-    href: 'https://www.linkedin.com/in/dr-jyoti-dongre-rao-11520726/',
-    image: '/Dr. Jyothi Rao.png',
-  },
-  {
-    name: 'Ms. Marilyn Olivera',
-    title: 'Director Clinical Education and Operations',
-    href: 'https://www.linkedin.com/in/marilynolivera/',
-    image: '/Ms. Marilyn Olivera.png',
-  },
-  {
-    name: 'Mr. Dinesh Kamble',
-    title: 'Board of Director',
-    href: 'https://www.linkedin.com/in/dinesh-k-a409a06b/',
-    image: '/Mr. Dinesh Kamble .png',
-  },
-  {
-    name: 'Mr. Pravin Nimbolkar',
-    title: 'Board of Director',
-    href: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/',
-    image: '/Mr. Pravin Nimbolkar .png',
-  },
-  {
-    name: 'Ms. Vinita Deopurkar',
-    title: 'Associate - Clinical Education',
-    href: 'https://www.linkedin.com/in/vinita-suresh-deopurkar-526a7424/',
-    image: '/Ms. Vinita Deopurkar .png',
-  },
-  {
-    name: 'Mr. Sajin Santhosh',
-    title: 'Business Development Analyst',
-    href: 'https://www.linkedin.com/in/sajin-santhosh-985a99194/',
-    image: '/Mr. Sajin Santhosh .png',
-  },
-  {
-    name: 'Mr. Abdul Wasim Sheikh',
-    title: 'Analyst - Clinical Education',
-    href: 'https://www.linkedin.com/in/abdul-sheikh-203522a5/',
-    image: '/Mr. Abdul Wasim Sheikh .png',
-  },
-  {
-    name: 'Ms. Shradha Mishra',
-    title: 'Business Development Lead',
-    href: 'https://www.linkedin.com/in/shradha16/',
-    image: '/Ms. Shradha Mishra .png',
-  },
-  {
-    name: 'Mr. Sahil Choure',
-    title: 'Business Development Analyst',
-    href: 'https://www.linkedin.com/in/marktaylor/',
-    image: '/Mr. Sahil Choure .png',
-  },
-  {
-    name: 'Mr. Huzaif Shaikh',
-    title: 'Business Development Analyst',
-    href: 'https://www.linkedin.com/in/marktaylor',
-    image: '/Mr. Huzaif Shaikh .png',
-  },
-  {
-    name: 'Ms. Aryaa Praseed',
-    title: 'Business Development Analyst',
-    href: 'https://www.linkedin.com/in/aryaa-praseed-62a301304/',
-    image: '/Ms. Aryaa Praseed .png',
-  },
-]
-
 const TEAM_GAP = 24
 const TEAM_CARD_HEIGHT = 360
 
@@ -104,13 +35,13 @@ function getVisibleCount(width) {
   return 1
 }
 
-function TeamCarousel() {
+function TeamCarousel({ members }) {
   const containerRef = useRef(null)
   const [cardWidth, setCardWidth] = useState(0)
   const [visibleCount, setVisibleCount] = useState(4)
   const [activeIndex, setActiveIndex] = useState(0)
 
-  const maxIndex = Math.max(0, TEAM_MEMBERS.length - visibleCount)
+  const maxIndex = Math.max(0, members.length - visibleCount)
 
   const updateLayout = useCallback(() => {
     const container = containerRef.current
@@ -122,8 +53,8 @@ function TeamCarousel() {
 
     setVisibleCount(nextVisibleCount)
     setCardWidth(nextCardWidth)
-    setActiveIndex((current) => Math.min(current, Math.max(0, TEAM_MEMBERS.length - nextVisibleCount)))
-  }, [])
+    setActiveIndex((current) => Math.min(current, Math.max(0, members.length - nextVisibleCount)))
+  }, [members.length])
 
   useLayoutEffect(() => {
     updateLayout()
@@ -158,7 +89,7 @@ function TeamCarousel() {
             transform: `translateX(-${activeIndex * (cardWidth + TEAM_GAP)}px)`,
           }}
         >
-          {TEAM_MEMBERS.map((member) => (
+          {members.map((member) => (
             <motion.article
               key={member.name}
               data-team-card
@@ -168,12 +99,23 @@ function TeamCarousel() {
               className="card-premium group flex shrink-0 flex-col p-5 bg-gradient-to-br from-cyan-50 via-green-50 to-emerald-100"
             >
               <div className="flex justify-center">
-                <img
-                  src={member.image}
-                  alt={member.name}
-                  className="h-28 w-28 rounded-full object-cover object-top"
-                  loading="lazy"
-                />
+                {member.image ? (
+                  <img
+                    src={member.image}
+                    alt={member.name}
+                    className="h-28 w-28 rounded-full object-cover object-top"
+                    loading="lazy"
+                  />
+                ) : (
+                  <div className="flex h-28 w-28 items-center justify-center rounded-full bg-gradient-to-br from-cyan-100 via-white to-emerald-100 font-display text-2xl font-bold text-emerald-700 ring-1 ring-white/80">
+                    {member.name
+                      .split(' ')
+                      .filter(Boolean)
+                      .slice(0, 2)
+                      .map((part) => part[0])
+                      .join('')}
+                  </div>
+                )}
               </div>
               <h3 className="mt-4 min-h-[3rem] text-center text-base font-semibold leading-snug text-foreground">
                 {member.name}
@@ -181,6 +123,7 @@ function TeamCarousel() {
               <p className="mt-2 flex-1 text-center text-sm leading-relaxed text-foreground-muted">
                 {member.title}
               </p>
+              {member.href && member.href !== '#' ? (
               <a
                 href={member.href}
                 target="_blank"
@@ -192,6 +135,7 @@ function TeamCarousel() {
                   →
                 </span>
               </a>
+              ) : null}
             </motion.article>
           ))}
         </div>
@@ -219,11 +163,12 @@ const HIGHLIGHTS = [
 ]
 
 export default function About() {
-  const cmsTeam = useCmsContent('/api/public/team', TEAM_MEMBERS)
+  const cmsTeam = useCmsContent('/api/public/team', [])
   const teamMembers = cmsTeam.map((member) => ({
     ...member,
     title: member.title || member.designation,
     href: member.href || member.linkedin || '#',
+    image: member.image || member.profileImage || '',
   }))
 
   return (
@@ -348,7 +293,7 @@ export default function About() {
           />
 
       
-          <TeamCarousel />
+          <TeamCarousel members={teamMembers} />
         </div>
       </div>
     </section>
