@@ -1,4 +1,3 @@
-import { IconDroplet } from './icons/ServiceIcons'
 import { CONTACT_INFO } from '../data/content'
 import Reveal from './ui/Reveal'
 
@@ -45,10 +44,12 @@ export default function Footer() {
               href="#home"
               className="group flex items-center gap-3 font-display text-lg font-bold tracking-tight text-foreground no-underline"
             >
-              <span className="flex h-10 w-10 items-center justify-center rounded-xl bg-gradient-to-br from-brand-100 to-green-100 text-brand-600 ring-1 ring-white/80 transition group-hover:scale-105">
-                <IconDroplet className="h-3.5 w-2.5" animated />
-              </span>
-              JV<span className="text-gradient">EDTECH</span>
+              <img
+                src="/jvedtech-logo.png"
+                alt="JVedtech"
+                className="h-14 w-auto object-contain transition group-hover:scale-105"
+              />
+              JV<span className="text-gradient">edtech</span>
             </a>
             <p className="mt-4 max-w-sm text-sm leading-relaxed text-foreground-muted">
               Where compassion meets technology {'\u2014'} redefining global healthcare learning.
@@ -106,15 +107,18 @@ export default function Footer() {
               </li>
               <li className="text-xs text-muted">{CONTACT_INFO.address}</li>
               <li className="mt-3 border-t border-brand-100 pt-3">
-                <a
-                  href={CONTACT_INFO.whatsapp}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center gap-2 font-semibold text-brand-700 transition hover:text-brand-500"
-                >
-                  <span>Join WhatsApp Community</span>
-                  <span>{'\u2192'}</span>
-                </a>
+                {[CONTACT_INFO.whatsapp, CONTACT_INFO.whatsappSecondary].map((href, index) => (
+                  <a
+                    key={href}
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="mt-2 flex items-center gap-2 font-semibold text-brand-700 transition hover:text-brand-500"
+                  >
+                    <span>{index === 0 ? 'Join WhatsApp Community' : 'Join WhatsApp Group'}</span>
+                    <span>{'\u2192'}</span>
+                  </a>
+                ))}
               </li>
             </ul>
           </Reveal>
@@ -123,7 +127,7 @@ export default function Footer() {
         <div className="glow-line mt-14 h-px w-full opacity-60" />
 
         <div className="mt-8 flex flex-col items-center justify-between gap-4 text-center text-xs text-muted sm:flex-row sm:text-left">
-          <p>{'\u00A9'} {new Date().getFullYear()} JV EdTech Medovation. All rights reserved.</p>
+          <p>{'\u00A9'} {new Date().getFullYear()} JVedtech Medovation. All rights reserved.</p>
           <p className="uppercase tracking-[0.25em] text-brand-600/70">
             Compassion {'\u00B7'} Technology {'\u00B7'} Innovation
           </p>

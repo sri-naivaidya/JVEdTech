@@ -10,7 +10,7 @@ export default function Blogs() {
   const blogs = cmsBlogs.map((blog, index) => ({
     ...blog,
     id: blog.id || blog.slug || blog._id || String(index + 1),
-    topic: blog.topic || `Topic: ${blog.category || 'JV EdTech'}`,
+    topic: blog.topic || `Topic: ${blog.category || 'JVedtech'}`,
     date: blog.date || `Date: ${new Date(blog.publishDate || blog.createdAt || Date.now()).toLocaleDateString('en-US', { month: 'long', day: 'numeric', year: 'numeric' })}`,
     excerpt: blog.excerpt || String(blog.content || '').replace(/<[^>]+>/g, '').slice(0, 220),
     href: blog.href || `/blogs/${blog.slug || blog._id}`,

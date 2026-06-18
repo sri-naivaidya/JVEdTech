@@ -165,7 +165,7 @@ export const TESTIMONIALS = [
     name: 'Mrs. Prachi Dharap',
     title: 'Principal',
     position: 'Sau. Minatai Thakre Institute of Nursing Education, Thane',
-    quote: 'We had an exceptional experience with JV Edtech Medovation\'s two-day session, "Standing Out with Style: Enhancing Your Professional Image," led by Dr. Jyoti Rao and Mrs. Marilyn Olivera. The engaging blend of theory and role-play transformed our nursing students, boosting their confidence and professional presence.',
+    quote: 'We had an exceptional experience with JVedtech Medovation\'s two-day session, "Standing Out with Style: Enhancing Your Professional Image," led by Dr. Jyoti Rao and Mrs. Marilyn Olivera. The engaging blend of theory and role-play transformed our nursing students, boosting their confidence and professional presence.',
   },
 ];
 
@@ -183,7 +183,7 @@ export const HERO_DATA = {
   careers: {
     badge: 'We\'re Hiring',
     heading: 'Shape the Future of <em>Healthcare Education</em>',
-    subheading: 'At JVEDTECH Medovation, we advance healthcare standards through tailored education and cutting-edge solutions. Join a team where learning, growth, and impact converge.',
+    subheading: 'At JVedtech Medovation, we advance healthcare standards through tailored education and cutting-edge solutions. Join a team where learning, growth, and impact converge.',
   },
 };
 

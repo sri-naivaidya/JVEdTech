@@ -180,18 +180,18 @@ export default function About() {
             <SectionHeader
               label="About Us"
               title="Empowering Lives with Cutting-Edge Solutions in Education, Wellness, and Technology"
-              description="JVEDTECH Medovation is a Mumbai-based healthcare innovation firm focused on healthcare education, home wellness, digital transformation, and AI-enabled healthcare solutions."
+              description="JVedtech Medovation is a Mumbai-based healthcare innovation firm focused on healthcare education, home wellness, digital transformation, and AI-enabled healthcare solutions."
             />
 
             <div className="mt-8 space-y-5 text-foreground-muted">
               <p className="max-w-xl text-base leading-relaxed">
-                At JVEDTECH, we are dedicated to advancing the standards of healthcare through our tailored educational services and cutting-edge solutions. Our commitment to learning and development drives our mission to adapt and excel in the dynamic healthcare landscape.
+                At JVedtech, we are dedicated to advancing the standards of healthcare through our tailored educational services and cutting-edge solutions. Our commitment to learning and development drives our mission to adapt and excel in the dynamic healthcare landscape.
               </p>
               <p className="max-w-xl text-base leading-relaxed">
-                JVEDTECH started with the vision of bringing high-quality medical services directly to individuals within the comfort of their homes. This focus on home healthcare reflects our core value of accessibility and patient-centric care.
+                JVedtech started with the vision of bringing high-quality medical services directly to individuals within the comfort of their homes. This focus on home healthcare reflects our core value of accessibility and patient-centric care.
               </p>
               <p className="max-w-xl text-base leading-relaxed">
-                JVEDTECH has successfully served a wide range of clients, including healthcare institutions, professionals, and individuals. Our client-focused approach has enabled us to build lasting relationships and make a meaningful impact in the industry.
+                JVedtech has successfully served a wide range of clients, including healthcare institutions, professionals, and individuals. Our client-focused approach has enabled us to build lasting relationships and make a meaningful impact in the industry.
               </p>
             </div>
 
@@ -266,7 +266,7 @@ export default function About() {
                   A closer look at our vision for healthcare learning
                 </h3>
                 <p className="mt-5 text-base leading-relaxed text-foreground-muted">
-                  Explore how JV EdTech brings education, wellness, and technology together through a modern healthcare innovation lens.
+                  Explore how JVedtech brings education, wellness, and technology together through a modern healthcare innovation lens.
                 </p>
               </div>
             </Reveal>
@@ -275,7 +275,7 @@ export default function About() {
               <div className="about-video-frame">
                 <iframe
                   src="https://www.youtube.com/embed/acEgPBlFZoo"
-                  title="JV EdTech video"
+                  title="JVedtech video"
                   allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
                   allowFullScreen
                 />

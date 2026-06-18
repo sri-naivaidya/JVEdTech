@@ -146,7 +146,7 @@ export default function App() {
 
             <motion.button
               type="button"
-              aria-label="Open JVEdTech assistant"
+              aria-label="Open JVedtech assistant"
               onClick={() => setChatOpen((prev) => !prev)}
               whileHover={{ y: -2, scale: 1.03 }}
               whileTap={{ scale: 0.97 }}
@@ -154,7 +154,7 @@ export default function App() {
             >
               <img
                 src="/chaat-icon.png"
-                alt="JVEdTech assistant"
+                alt="JVedtech assistant"
                 className="h-8 w-8 rounded-full object-contain bg-transparent"
               />
             </motion.button>

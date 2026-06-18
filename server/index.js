@@ -70,7 +70,7 @@ let Event = mongoose.model('Event', new mongoose.Schema({
 let Blog = mongoose.model('Blog', new mongoose.Schema({
   title: { type: String, required: true },
   slug: { type: String, required: true, unique: true },
-  author: { type: String, default: 'JV EdTech' },
+  author: { type: String, default: 'JVedtech' },
   category: String,
   publishDate: Date,
   content: String,
@@ -159,7 +159,8 @@ let Setting = mongoose.model('Setting', new mongoose.Schema({
   value: String,
 }, baseOptions))
 
-const TEAM_SEED_VERSION = 'team-seed-2026-06-18-v2'
+const TEAM_SEED_VERSION = 'team-seed-2026-06-18-v3'
+const BRANDING_SYNC_VERSION = 'branding-sync-2026-06-18-v1'
 const TEAM_MEMBER_SEED = [
   {
     name: 'Dr. Jyoti Rao',
@@ -189,7 +190,7 @@ const TEAM_MEMBER_SEED = [
     name: 'Mr. Pravin Nimbolkar',
     designation: 'Board of Director',
     profileImage: '/team/mr-pravin-nimbolkar.jpeg',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/jv-edtech-medovation',
     order: 4,
     status: 'published',
   },
@@ -286,7 +287,7 @@ const TEAM_MEMBER_SEED = [
     name: 'Khushboo Gupta',
     designation: 'Associate Clinical Education',
     profileImage: '/team/khushboo-gupta.png',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/jv-edtech-medovation',
     order: 16,
     status: 'published',
   },
@@ -310,7 +311,7 @@ const TEAM_MEMBER_SEED = [
     name: 'Hrishikesh Mishra',
     designation: 'IT Specialist',
     profileImage: '/team/hrishikesh-mishra.jpeg',
-    linkedin: '',
+    linkedin: 'https://www.linkedin.com/company/jv-edtech-medovation',
     order: 19,
     status: 'published',
   },
@@ -547,19 +548,19 @@ async function seedExistingContent() {
   }
   if (await Blog.countDocuments() === 0) {
     await Blog.insertMany([
-      { title: 'Building Empathy Through Effective Communication in Healthcare Training', slug: '1', author: 'JV EdTech', category: 'Healthcare', publishDate: '2025-01-17', excerpt: 'Effective communication is fundamental to healthcare, influencing patient outcomes, satisfaction, and the overall efficiency of care delivery.', content: 'Effective communication is fundamental to healthcare, influencing patient outcomes, satisfaction, and the overall efficiency of care delivery.', status: 'published' },
-      { title: 'Leveraging AI in Education & Healthcare: Opportunities & Challenges', slug: '2', author: 'JV EdTech', category: 'Technology', publishDate: '2025-01-16', excerpt: 'Artificial Intelligence (AI) is transforming education and healthcare by making processes smarter and more efficient, while also posing challenges that need careful attention.', content: 'Artificial Intelligence (AI) is transforming education and healthcare by making processes smarter and more efficient, while also posing challenges that need careful attention.', status: 'published' },
-      { title: 'The Future of EdTech in Healthcare: Trends & Innovation', slug: '3', author: 'JV EdTech', category: 'Education Technology', publishDate: '2025-01-16', excerpt: 'EdTech is reshaping healthcare education through tools like AR, VR, AI, and remote learning platforms, creating new opportunities for accessibility and personalized learning.', content: 'EdTech is reshaping healthcare education through tools like AR, VR, AI, and remote learning platforms, creating new opportunities for accessibility and personalized learning.', status: 'published' },
+      { title: 'Building Empathy Through Effective Communication in Healthcare Training', slug: '1', author: 'JVedtech', category: 'Healthcare', publishDate: '2025-01-17', excerpt: 'Effective communication is fundamental to healthcare, influencing patient outcomes, satisfaction, and the overall efficiency of care delivery.', content: 'Effective communication is fundamental to healthcare, influencing patient outcomes, satisfaction, and the overall efficiency of care delivery.', status: 'published' },
+      { title: 'Leveraging AI in Education & Healthcare: Opportunities & Challenges', slug: '2', author: 'JVedtech', category: 'Technology', publishDate: '2025-01-16', excerpt: 'Artificial Intelligence (AI) is transforming education and healthcare by making processes smarter and more efficient, while also posing challenges that need careful attention.', content: 'Artificial Intelligence (AI) is transforming education and healthcare by making processes smarter and more efficient, while also posing challenges that need careful attention.', status: 'published' },
+      { title: 'The Future of EdTech in Healthcare: Trends & Innovation', slug: '3', author: 'JVedtech', category: 'Education Technology', publishDate: '2025-01-16', excerpt: 'EdTech is reshaping healthcare education through tools like AR, VR, AI, and remote learning platforms, creating new opportunities for accessibility and personalized learning.', content: 'EdTech is reshaping healthcare education through tools like AR, VR, AI, and remote learning platforms, creating new opportunities for accessibility and personalized learning.', status: 'published' },
     ])
   }
   if (await Newsletter.countDocuments() === 0) {
     await Newsletter.insertMany([
-      { title: 'JVEDTech Medovation Newsletter', month: 'September', year: '2024', pdfFile: 'https://drive.google.com/file/d/1FhXAMIN3n7kAfayrDPZbR4mQJYnu-dau/view?usp=sharing', status: 'published' },
-      { title: 'JVEDTech Medovation Newsletter', month: 'December', year: '2024', pdfFile: 'https://drive.google.com/file/d/1TE0pbSB-veuIAoQ0NfE_WRYgnUQrzFx1/view?usp=sharing', status: 'published' },
-      { title: 'JVEDTech Medovation Newsletter', month: 'April', year: '2025', pdfFile: 'https://drive.google.com/file/d/12Mhv990u5ff4hTCUKeCGq16jLgVxHQH8/view?usp=sharing', status: 'published' },
-      { title: 'JVEDTech Medovation Newsletter', month: 'July', year: '2025', pdfFile: 'https://drive.google.com/file/d/1gnuTiYQICZ3K9Jpdo07HUQtHT-JV4GyK/view?usp=drive_link', status: 'published' },
-      { title: 'JVEDTech Medovation Newsletter', month: 'October', year: '2025', pdfFile: 'https://drive.google.com/file/d/1hX_Ld2lZcQoZtBfhoKfcebgiZwsx8igZ/view?usp=drivesdk', status: 'published' },
-      { title: 'JVEDTech Medovation Newsletter', month: 'December', year: '2025', pdfFile: 'https://drive.google.com/file/d/1ngxqN33v9rvN3Fx-DqDMBVBL8ddyRF2c/view?usp=drivesdk', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'September', year: '2024', pdfFile: 'https://drive.google.com/file/d/1FhXAMIN3n7kAfayrDPZbR4mQJYnu-dau/view?usp=sharing', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'December', year: '2024', pdfFile: 'https://drive.google.com/file/d/1TE0pbSB-veuIAoQ0NfE_WRYgnUQrzFx1/view?usp=sharing', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'April', year: '2025', pdfFile: 'https://drive.google.com/file/d/12Mhv990u5ff4hTCUKeCGq16jLgVxHQH8/view?usp=sharing', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'July', year: '2025', pdfFile: 'https://drive.google.com/file/d/1gnuTiYQICZ3K9Jpdo07HUQtHT-JV4GyK/view?usp=drive_link', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'October', year: '2025', pdfFile: 'https://drive.google.com/file/d/1hX_Ld2lZcQoZtBfhoKfcebgiZwsx8igZ/view?usp=drivesdk', status: 'published' },
+      { title: 'JVedtech Medovation Newsletter', month: 'December', year: '2025', pdfFile: 'https://drive.google.com/file/d/1ngxqN33v9rvN3Fx-DqDMBVBL8ddyRF2c/view?usp=drivesdk', status: 'published' },
     ])
   }
   if (await Career.countDocuments() === 0) {
@@ -570,6 +571,7 @@ async function seedExistingContent() {
     ])
   }
   await syncTeamMembersFromAdminSeed()
+  await syncBrandingLabels()
 }
 
 async function syncTeamMembersFromAdminSeed() {
@@ -595,6 +597,32 @@ async function syncTeamMembersFromAdminSeed() {
   }
 
   await Setting.create({ key: TEAM_SEED_VERSION, value: 'done' })
+}
+
+async function syncBrandingLabels() {
+  const done = await Setting.findOne({ key: BRANDING_SYNC_VERSION })
+  if (done) return
+
+  const blogs = await Blog.find()
+  for (const blog of blogs) {
+    if (blog.author && /jv\s*edtech|jvedtech/i.test(blog.author)) {
+      blog.author = 'JVedtech'
+      await blog.save()
+    }
+  }
+
+  const newsletters = await Newsletter.find()
+  for (const newsletter of newsletters) {
+    if (newsletter.title) {
+      const nextTitle = newsletter.title.replace(/JV\s*EdTech|JVEDTech|JVEDTECH|JVEdTech|JvEdTech/gi, 'JVedtech')
+      if (nextTitle !== newsletter.title) {
+        newsletter.title = nextTitle
+        await newsletter.save()
+      }
+    }
+  }
+
+  await Setting.create({ key: BRANDING_SYNC_VERSION, value: 'done' })
 }
 
 async function logActivity(action, entity, entityId, user) {
@@ -806,6 +834,41 @@ app.get('/api/admin/dashboard', requireAuth, async (req, res) => {
     totalEventRegistrations,
     totalAdminUsers,
     recentActivity,
+  })
+})
+
+app.get('/api/admin/database-explorer', requireAuth, async (req, res) => {
+  const [
+    teamMembers,
+    events,
+    careers,
+    messages,
+    registrations,
+    applications,
+  ] = await Promise.all([
+    TeamMember.countDocuments(),
+    Event.countDocuments(),
+    Career.countDocuments(),
+    Message.countDocuments(),
+    Registration.countDocuments(),
+    Application.countDocuments(),
+  ])
+
+  res.json({
+    storage: storageMode,
+    counts: {
+      teamMembers,
+      events,
+      careers,
+      communityLinks: 2,
+      contactMessages: messages,
+      registrations,
+      applications,
+    },
+    communityLinks: [
+      'https://chat.whatsapp.com/FcfH0eRIk7rCeL5dsOzcf2',
+      'https://chat.whatsapp.com/GC0KGjrghqeLUxJYgdIkPq?s=sw&p=i&ilr=0',
+    ],
   })
 })
 

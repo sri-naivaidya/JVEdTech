@@ -15,13 +15,13 @@ const RESOURCE_CATEGORIES = [
   {
     label: 'Blogs',
     href: '/blogs',
-    description: BLOGS[0]?.excerpt || 'Insights and perspectives from JV EdTech.',
+    description: BLOGS[0]?.excerpt || 'Insights and perspectives from JVedtech.',
     meta: `${BLOGS.length} articles`,
   },
   {
     label: 'Newsletters',
     href: '/newsletters',
-    description: NEWSLETTERS[0]?.title || 'JV EdTech newsletters and updates.',
+    description: NEWSLETTERS[0]?.title || 'JVedtech newsletters and updates.',
     meta: `${NEWSLETTERS.length} editions`,
   },
 ]
@@ -46,12 +46,12 @@ export default function Resources() {
               </div>
               <AnimatedText
                 as="h1"
-                text="Explore JV EdTech insights, events, and updates"
+                text="Explore JVedtech insights, events, and updates"
                 className="mt-8 max-w-3xl font-display text-4xl font-bold leading-[1.05] text-foreground sm:text-5xl lg:text-6xl"
                 delay={0.12}
               />
               <p className="mt-6 max-w-2xl text-lg leading-relaxed text-foreground-muted">
-                A central hub for upcoming Events, Blogs, and Newsletters from JV EdTech.
+                A central hub for upcoming Events, Blogs, and Newsletters from JVedtech.
               </p>
               <div className="mt-8 flex flex-col gap-3 sm:flex-row">
                 <Button href="/events">View Events</Button>

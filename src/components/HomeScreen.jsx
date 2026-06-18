@@ -115,7 +115,7 @@ export default function HomeScreen() {
                   transition={{ duration: 0.7, delay: 0.62, ease: [0.22, 1, 0.36, 1] }}
                   className="hero-sub max-w-xl text-base leading-relaxed text-foreground-muted lg:text-lg"
                 >
-                  JV EdTech Medovation bridges compassion and technology {'\u2014'} empowering
+                  JVedtech Medovation bridges compassion and technology {'\u2014'} empowering
                   professionals through AI-driven education, clinical informatics, and
                   digital health innovation.
                 </motion.p>

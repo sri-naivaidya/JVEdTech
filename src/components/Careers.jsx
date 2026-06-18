@@ -144,7 +144,7 @@ export default function Careers() {
                 <span className="text-gradient">Healthcare Education</span>
               </h2>
               <p className="mb-8 max-w-2xl text-lg leading-relaxed text-foreground-muted">
-                At JVEDTECH Medovation, we advance healthcare standards through tailored education and cutting-edge solutions. Join a team where learning, growth, and impact converge.
+                At JVedtech Medovation, we advance healthcare standards through tailored education and cutting-edge solutions. Join a team where learning, growth, and impact converge.
               </p>
 
               <div className="flex flex-wrap gap-3">
